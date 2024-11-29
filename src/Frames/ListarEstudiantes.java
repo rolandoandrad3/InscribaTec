@@ -52,10 +52,18 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         idEstudiante=GestionAlumnos.idAlumno;
         
         try {
-            PreparedStatement ps = cn.prepareStatement("Select * FROM Estudiantes WHERE ID_Estudiante = '"+ idEstudiante +"' ");
+            PreparedStatement ps = cn.prepareStatement("SELECT e.ID_Estudiante, e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+                    + "e.Correo, e.Telefono, c.Nombre_Carrera, cur.Nombre_Curso, e.Estado, e.Cum "
+                    + "FROM Estudiantes e "
+                    + "LEFT JOIN Carreras c ON e.ID_Carrera = c.ID_Carrera "
+                    + "LEFT JOIN Cursos cur ON e.ID_Estudiante = cur.ID_Estudiante "
+                    + "WHERE e.ID_Estudiante = ?"
+            );
+            ps.setInt(1, idEstudiante); // Reemplaza idEstudiante con el valor que necesitas
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                setTitle("Listado de Estudiantes"+rs.getString("Carnet"));
+            
+            if (rs.next()) {
+                setTitle("Listado de Estudiantes" + rs.getString("Carnet"));
                 txtNombres.setText(rs.getString("Nombre"));
                 txtApellidos.setText(rs.getString("Apellido"));
                 txtCarnet.setText(rs.getString("Carnet"));
@@ -75,7 +83,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         //
         try {
             PreparedStatement pst = cn.prepareStatement(
-            "SELECT ");
+            "SELECT");
             
             
         } catch (Exception e) {

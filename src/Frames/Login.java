@@ -18,7 +18,6 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 /**
  *
  * @author Rolan
- * Token: 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
  */
 public class Login extends javax.swing.JFrame {
 

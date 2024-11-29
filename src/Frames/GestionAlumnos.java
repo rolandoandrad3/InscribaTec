@@ -30,9 +30,7 @@ public class GestionAlumnos extends javax.swing.JFrame {
         initComponents();
         setSize(1000, 600);
         // Centrar la ventana en la pantalla
-        setLocationRelativeTo(null);
-        // Evitar que la ventana sea redimensionable
-        setResizable(false);
+        setLocationRelativeTo(null); 
         // Opcional: Establecer un título para la ventana
         setTitle("Registro de Calificaciones - Admin");
         cerrar();

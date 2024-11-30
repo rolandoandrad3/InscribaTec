@@ -33,9 +33,9 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);
         // Evitar que la ventana sea redimensionable
-        setResizable(true);
+        setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Listado de Estudiantes - Admin");
+        
         cerrar();
         //Al ser listado, no deben poder modificarse
         txtNombres.setEnabled(false);
@@ -50,48 +50,47 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtCUM.setEnabled(false);
         
         idEstudiante=GestionAlumnos.idAlumno;
-        
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT e.ID_Estudiante, e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
-                    + "e.Correo, e.Telefono, c.Nombre_Carrera, cur.Nombre_Curso, e.Estado, e.Cum "
-                    + "FROM Estudiantes e "
-                    + "LEFT JOIN Carreras c ON e.ID_Carrera = c.ID_Carrera "
-                    + "LEFT JOIN Cursos cur ON e.ID_Estudiante = cur.ID_Estudiante "
-                    + "WHERE e.ID_Estudiante = ?"
-            );
-            ps.setInt(1, idEstudiante); // Reemplaza idEstudiante con el valor que necesitas
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                setTitle("Listado de Estudiantes" + rs.getString("Carnet"));
-                txtNombres.setText(rs.getString("Nombre"));
-                txtApellidos.setText(rs.getString("Apellido"));
-                txtCarnet.setText(rs.getString("Carnet"));
-                txtFechaNac.setText(rs.getString("Fecha_Nacimiento"));
-                txtEmail.setText(rs.getString("Correo"));
-                txtTelefono.setText(rs.getString("Telefono"));
-                txtCarrera.setText(rs.getString("Nombre_Carrera"));
-                txtEstado.setText(rs.getString("Estado"));
-                txtCurso.setText(rs.getString("Curso"));
-                txtCUM.setText(rs.getString("Cum"));
-                
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cargar Alumno. Contacte al administrador");
-        }
-        //
-        try {
-            PreparedStatement pst = cn.prepareStatement(
-            "SELECT");
-            
-            
-        } catch (Exception e) {
-        }
+        // La consulta SQL para obtener toda la información del estudiante
+        String sql = "SELECT e.ID_Estudiante, e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+                   + "e.Correo, e.Telefono, e.Estado AS Estado_Estudiante, "
+                   + "c.Nombre_Carrera, cur.Nombre_Curso, "
+                   + "i.ID_Inscripcion, i.Fecha_Inscripcion, i.Estado_Inscripcion, e.Cum "
+                   + "FROM Estudiantes e "
+                   + "LEFT JOIN Carreras c ON e.ID_Carrera = c.Nombre_Carrera "
+                   + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
+                   + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
+                   + "WHERE e.ID_Estudiante = ?";
+
+        // Preparar la consulta con el ID del estudiante
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idEstudiante); // Reemplaza idEstudiante con el valor correspondiente
+        ResultSet rs = ps.executeQuery();
         
-        
+        if(rs.next()){
+            setTitle("Información de Estudiante - " + rs.getString("Carnet") + " - Admin");
+            txtNombres.setText(rs.getString("Nombre"));
+            txtApellidos.setText(rs.getString("Apellido"));
+            txtCarnet.setText(rs.getString("Carnet"));
+            txtFechaNac.setText(rs.getDate("Fecha_Nacimiento").toString()); // Formato yyyy-MM-dd
+            txtEmail.setText(rs.getString("Correo"));
+            txtTelefono.setText(rs.getString("Telefono"));
+            txtCarrera.setText(rs.getString("Nombre_Carrera"));
+            txtEstado.setText(rs.getString("Estado_Estudiante"));
+            txtCurso.setText(rs.getString("Nombre_Curso"));
+            txtCUM.setText(rs.getString("Cum"));
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al cargar datos en la tabla: " + e.getMessage());
+        System.err.println(e);
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
         
     }
+    
+
+    
+    
         public void cerrar(){
         try {
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

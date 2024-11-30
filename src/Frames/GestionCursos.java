@@ -4,9 +4,11 @@
  */
 package Frames;
 
+import Clases.Conectar;
 import Frames.Admin.Principal;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
@@ -32,7 +34,16 @@ public class GestionCursos extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(true);
         // Opcional: Establecer un título para la ventana
-        setTitle("Gestion de Ciclos - Admin");    
+        setTitle("Gestion de Ciclos - Admin");
+        
+        idCurso.setEnabled(false);
+        txtCupoDisp.setEnabled(false);
+        cargarcbMaterias();
+        cargarcbProfesores();
+        
+        
+        
+        
 }
     public void cerrar(){
         try {
@@ -54,6 +65,77 @@ public class GestionCursos extends javax.swing.JFrame {
          } 
      
     }
+    
+    public void limpiar(){
+        idCurso.setText("");
+        cbMaterias.setSelectedItem(0);
+        cbProfesor.setSelectedItem(0);
+        txtCupoMax.setText("");
+        txtCupoDisp.setText("");
+        cbSemestre.setSelectedItem(0);
+        cbYear.setSelectedItem(4);         
+     }
+    
+    public void cargarcbProfesores(){
+    try {
+        // Consulta SQL para obtener el ID del profesor y concatenar Nombre y Apellido
+        String sql = "SELECT CONCAT(Nombre, ' ', Apellido) AS NombreCompleto FROM Profesores;";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        
+        // Limpia los elementos previos en el combo box
+        cbProfesor.removeAllItems();
+        cbProfesor.addItem("Seleccione un profesor"); // Opción por defecto
+        
+        // Recorre el resultado y llena el combo box
+        while (rs.next()) {
+            String nombreCompleto = rs.getString("NombreCompleto");
+            cbProfesor.addItem(nombreCompleto);
+        }
+    } catch (Exception e) {
+        System.err.println(e);
+        JOptionPane.showMessageDialog(null, "Error al cargar los profesores: " + e.getMessage());
+    }
+        
+    }
+    
+    public void cargarcbMaterias() {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            // Consulta para obtener los nombres de las materias
+            String sql = "SELECT Nombre_Materia FROM Materias";
+            ps = cn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            // Limpiar el JComboBox antes de llenarlo
+            cbMaterias.removeAllItems();
+            cbMaterias.addItem("Seleccione una materia"); // Opción por defecto
+
+            // Llenar el JComboBox con los nombres de las materias
+            while (rs.next()) {
+                cbMaterias.addItem(rs.getString("Nombre_Materia"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar materias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar la conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }
+    
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,6 +149,24 @@ public class GestionCursos extends javax.swing.JFrame {
         BackAndFooter5 = new javax.swing.JPanel();
         btnBack5 = new javax.swing.JButton();
         lblfooter3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCursos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        idCurso = new javax.swing.JTextField();
+        txtCupoDisp = new javax.swing.JTextField();
+        txtCupoMax = new javax.swing.JTextField();
+        cbSemestre = new javax.swing.JComboBox<>();
+        cbProfesor = new javax.swing.JComboBox<>();
+        btnGuardarCurso = new javax.swing.JToggleButton();
+        btnActualizarCurso = new javax.swing.JToggleButton();
+        cbYear = new javax.swing.JComboBox<>();
+        cbMaterias = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,7 +187,7 @@ public class GestionCursos extends javax.swing.JFrame {
             BackAndFooter5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackAndFooter5Layout.createSequentialGroup()
                 .addComponent(btnBack5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 645, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblfooter3)
                 .addContainerGap())
         );
@@ -101,21 +201,174 @@ public class GestionCursos extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Materias", "Profesores", "Cupo Maximo", "Semestre", "Año"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblCursos);
+        if (tblCursos.getColumnModel().getColumnCount() > 0) {
+            tblCursos.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setText("ID");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Materias del curso");
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel3.setText("Profesor Asignado");
+
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setText("Cupo Maximo");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel5.setText("Cupo Disponible");
+
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel6.setText("Semestre");
+
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel7.setText("Año");
+
+        idCurso.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        txtCupoDisp.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        txtCupoMax.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        cbSemestre.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ciclo 01", "Ciclo 02", "Ciclo 03" }));
+        cbSemestre.setToolTipText("");
+        cbSemestre.setName(""); // NOI18N
+
+        cbProfesor.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbProfesor.setToolTipText("");
+        cbProfesor.setName(""); // NOI18N
+
+        btnGuardarCurso.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnGuardarCurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
+        btnGuardarCurso.setText("Guardar");
+        btnGuardarCurso.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnGuardarCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCursoActionPerformed(evt);
+            }
+        });
+
+        btnActualizarCurso.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnActualizarCurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/update.png"))); // NOI18N
+        btnActualizarCurso.setText("Actualizar");
+        btnActualizarCurso.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizarCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarCursoActionPerformed(evt);
+            }
+        });
+
+        cbYear.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030" }));
+        cbYear.setSelectedIndex(4);
+        cbYear.setToolTipText("");
+        cbYear.setName(""); // NOI18N
+
+        cbMaterias.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbMaterias.setToolTipText("");
+        cbMaterias.setName(""); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(8, 8, 8)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(idCurso)
+                        .addComponent(txtCupoDisp)
+                        .addComponent(txtCupoMax)
+                        .addComponent(cbSemestre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnGuardarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
+            .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 543, Short.MAX_VALUE)
-                .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(64, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(cbProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtCupoMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtCupoDisp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(cbSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(41, 41, 41)
+                        .addComponent(btnGuardarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        cbSemestre.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -126,6 +379,117 @@ public class GestionCursos extends javax.swing.JFrame {
         principal.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack5ActionPerformed
+
+    private void btnGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCursoActionPerformed
+        // TODO add your handling code here:
+       // Validar que todos los campos estén llenos
+    if (cbMaterias.getSelectedIndex() == 0 || cbProfesor.getSelectedIndex() == 0 || 
+        txtCupoMax.getText().isEmpty() || txtCupoDisp.getText().isEmpty() || 
+        cbSemestre.getSelectedIndex() == 0 || cbYear.getSelectedIndex() == 4) {
+        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Obtener valores de los campos
+    int idMateria = Integer.parseInt(cbMaterias.getSelectedItem().toString());
+    int idProfesor = Integer.parseInt(cbProfesor.getSelectedItem().toString());
+    int cupoMaximo = Integer.parseInt(txtCupoMax.getText());
+    int cupoDisponible = Integer.parseInt(txtCupoDisp.getText());
+    String semestre = cbSemestre.getSelectedItem().toString();
+    int anio = Integer.parseInt(cbYear.getSelectedItem().toString());
+
+    // Conexión y query
+    Connection cn = null;
+    PreparedStatement ps = null;
+
+    try {
+        String sql = "INSERT INTO Cursos (ID_Materia, ID_Profesor, Cupo_Maximo, Cupo_Disponible, Semestre, Anio) VALUES (?, ?, ?, ?, ?, ?)";
+        ps = cn.prepareStatement(sql);
+
+        // Asignar parámetros
+        ps.setInt(1, idMateria);
+        ps.setInt(2, idProfesor);
+        ps.setInt(3, cupoMaximo);
+        ps.setInt(4, cupoDisponible);
+        ps.setString(5, semestre);
+        ps.setInt(6, anio);
+
+        // Ejecutar consulta
+        int resultado = ps.executeUpdate();
+
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Curso guardado exitosamente");
+            limpiar(); // Llamada al método para limpiar los campos
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar el curso", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (cn != null) cn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cerrar la conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_btnGuardarCursoActionPerformed
+
+    private void btnActualizarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCursoActionPerformed
+        // TODO add your handling code here:
+        // Validar que todos los campos estén llenos
+    if (idCurso.getText().isEmpty() || cbMaterias.getSelectedIndex() == 0 || cbProfesor.getSelectedIndex() == 0 || 
+        txtCupoMax.getText().isEmpty() || txtCupoDisp.getText().isEmpty() || 
+        cbSemestre.getSelectedIndex() == 0 || cbYear.getSelectedIndex() == 4) {
+        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos para actualizar", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Obtener valores de los campos
+    int cursoId = Integer.parseInt(idCurso.getText());
+    int idMateria = Integer.parseInt(cbMaterias.getSelectedItem().toString());
+    int idProfesor = Integer.parseInt(cbProfesor.getSelectedItem().toString());
+    int cupoMaximo = Integer.parseInt(txtCupoMax.getText());
+    int cupoDisponible = Integer.parseInt(txtCupoDisp.getText());
+    String semestre = cbSemestre.getSelectedItem().toString();
+    int anio = Integer.parseInt(cbYear.getSelectedItem().toString());
+
+    PreparedStatement ps = null;
+
+    try {
+        String sql = "UPDATE Cursos SET ID_Materia = ?, ID_Profesor = ?, Cupo_Maximo = ?, Cupo_Disponible = ?, Semestre = ?, Anio = ? WHERE ID_Curso = ?";
+        ps = cn.prepareStatement(sql);
+
+        // Asignar parámetros
+        ps.setInt(1, idMateria);
+        ps.setInt(2, idProfesor);
+        ps.setInt(3, cupoMaximo);
+        ps.setInt(4, cupoDisponible);
+        ps.setString(5, semestre);
+        ps.setInt(6, anio);
+        ps.setInt(7, cursoId);
+
+        // Ejecutar consulta
+        int resultado = ps.executeUpdate();
+
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Curso actualizado exitosamente");
+            limpiar(); // Llamar al método para limpiar los campos
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el curso", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (cn != null) cn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cerrar la conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        
+    }//GEN-LAST:event_btnActualizarCursoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,7 +528,28 @@ public class GestionCursos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackAndFooter5;
+    private javax.swing.JToggleButton btnActualizarCurso;
     private javax.swing.JButton btnBack5;
+    private javax.swing.JToggleButton btnGuardarCurso;
+    private javax.swing.JComboBox<String> cbMaterias;
+    private javax.swing.JComboBox<String> cbProfesor;
+    private javax.swing.JComboBox<String> cbSemestre;
+    private javax.swing.JComboBox<String> cbYear;
+    private javax.swing.JTextField idCurso;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
+    private javax.swing.JTable tblCursos;
+    private javax.swing.JTextField txtCupoDisp;
+    private javax.swing.JTextField txtCupoMax;
     // End of variables declaration//GEN-END:variables
+    Conectar conectado = new Conectar();
+    Connection cn = conectado.conexion();
+
 }

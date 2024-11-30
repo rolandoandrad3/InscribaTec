@@ -6,7 +6,6 @@ package Frames.Admin;
 
 import Frames.GestionProfesores;
 import Frames.GestionAlumnos;
-import Frames.GestionCursos;
 import Frames.Reportes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -73,7 +72,7 @@ public class Principal extends javax.swing.JFrame {
         btnUsers = new javax.swing.JToggleButton();
         btnEstudiantes = new javax.swing.JToggleButton();
         btnProfesores = new javax.swing.JToggleButton();
-        btnProfesores1 = new javax.swing.JToggleButton();
+        btnGestionMaterias = new javax.swing.JToggleButton();
         btnGestionCursos = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,15 +149,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnProfesores1.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        btnProfesores1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/materias.png"))); // NOI18N
-        btnProfesores1.setText("Registro de Materias");
-        btnProfesores1.setToolTipText("Gestion de profesores");
-        btnProfesores1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnProfesores1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnProfesores1.addActionListener(new java.awt.event.ActionListener() {
+        btnGestionMaterias.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        btnGestionMaterias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/materias.png"))); // NOI18N
+        btnGestionMaterias.setText("Registro de Materias");
+        btnGestionMaterias.setToolTipText("Gestion de profesores");
+        btnGestionMaterias.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnGestionMaterias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGestionMaterias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProfesores1ActionPerformed(evt);
+                btnGestionMateriasActionPerformed(evt);
             }
         });
 
@@ -189,7 +188,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProfesores1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGestionMaterias, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGestionCursos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
@@ -207,7 +206,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProfesores1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGestionMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,12 +276,12 @@ public class Principal extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnUsersActionPerformed
 
-    private void btnProfesores1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfesores1ActionPerformed
+    private void btnGestionMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionMateriasActionPerformed
         // TODO add your handling code here:
         GestionProfesores gestionProfesores = new GestionProfesores();
         gestionProfesores.setVisible(true);
         dispose();
-    }//GEN-LAST:event_btnProfesores1ActionPerformed
+    }//GEN-LAST:event_btnGestionMateriasActionPerformed
 
     private void btnGestionCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCursosActionPerformed
         // TODO add your handling code here:
@@ -330,9 +329,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnEstudiantes;
     private javax.swing.JToggleButton btnGestionCarreras;
     private javax.swing.JToggleButton btnGestionCursos;
+    private javax.swing.JToggleButton btnGestionMaterias;
     private javax.swing.JToggleButton btnNotas;
     private javax.swing.JToggleButton btnProfesores;
-    private javax.swing.JToggleButton btnProfesores1;
     private javax.swing.JToggleButton btnReportes;
     private javax.swing.JToggleButton btnUsers;
     private javax.swing.JPanel jPanel1;

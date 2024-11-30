@@ -59,7 +59,7 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnProfesores" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnReportes" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
-                      <Component id="btnProfesores1" alignment="1" max="32767" attributes="0"/>
+                      <Component id="btnRegistroMaterias" alignment="1" max="32767" attributes="0"/>
                       <Component id="btnGestionCursos" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="134" max="32767" attributes="0"/>
@@ -82,7 +82,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnNotas" min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="btnProfesores1" min="-2" pref="65" max="-2" attributes="0"/>
+                      <Component id="btnRegistroMaterias" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnGestionCursos" min="-2" pref="65" max="-2" attributes="0"/>
@@ -207,7 +207,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNotasActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="btnProfesores1">
+        <Component class="javax.swing.JToggleButton" name="btnRegistroMaterias">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Myanmar Text" size="14" style="0"/>
@@ -227,7 +227,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfesores1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistroMateriasActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="btnGestionCursos">

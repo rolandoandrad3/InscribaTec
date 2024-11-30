@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Frames;
+package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
@@ -10,7 +10,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +23,11 @@ public class GestionCursos extends javax.swing.JFrame {
     /**
      * Creates new form GestionCursos
      */
+    
+    
+    DefaultTableModel modelo = new DefaultTableModel();
+    
+    
     public GestionCursos() {
         initComponents();
         cerrar();
@@ -35,16 +42,58 @@ public class GestionCursos extends javax.swing.JFrame {
         setResizable(true);
         // Opcional: Establecer un título para la ventana
         setTitle("Gestion de Ciclos - Admin");
-        
         idCurso.setEnabled(false);
-        txtCupoDisp.setEnabled(false);
+        mostrarTabla("");
+        
+        
         cargarcbMaterias();
         cargarcbProfesores();
         
         
+    }
+    public void mostrarTabla(String valor){
+        try {
+        // Consulta SQL con JOIN para obtener los nombres de la materia y el profesor
+        String sql = "SELECT c.ID_Curso, m.Nombre_Materia AS Materia, CONCAT(p.Nombre, ' ', p.Apellido) AS Profesor, " +
+                     "c.Cupo_Maximo, c.Cupo_Disponible, c.Anio " +
+                     "FROM Cursos c " +
+                     "JOIN Materias m ON c.ID_Materia = m.ID_Materia " +
+                     "JOIN Profesores p ON c.ID_Profesor = p.ID_Profesor";
         
-        
-}
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        // Crear el modelo de la tabla
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        // Agregar las columnas a la tabla
+        modelo.addColumn("ID");
+        modelo.addColumn("Materia");
+        modelo.addColumn("Profesor");
+        modelo.addColumn("Cupo Maximo");
+        modelo.addColumn("Cupo Disponible");
+        modelo.addColumn("Año");
+
+        // Llenar la tabla con los datos obtenidos de la base de datos
+        while (rs.next()) {
+            Object[] fila = new Object[6];
+            fila[0] = rs.getInt("ID_Curso");           // ID del curso
+            fila[1] = rs.getString("Materia");         // Nombre de la materia
+            fila[2] = rs.getString("Profesor");        // Nombre del profesor
+            fila[3] = rs.getInt("Cupo_Maximo");        // Cupo máximo
+            fila[4] = rs.getInt("Cupo_Disponible");    // Cupo disponible
+            fila[5] = rs.getInt("Anio");               // Año
+            modelo.addRow(fila); // Agregar la fila al modelo
+        }
+
+        // Asignar el modelo a la JTable
+        tblCursos.setModel(modelo);
+
+    } catch (SQLException e) {
+        System.err.println("Error en el llenado de tabla cursos: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al cargar los cursos. Contacte al administrador", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
     public void cerrar(){
         try {
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -73,7 +122,7 @@ public class GestionCursos extends javax.swing.JFrame {
         txtCupoMax.setText("");
         txtCupoDisp.setText("");
         cbSemestre.setSelectedItem(0);
-        cbYear.setSelectedItem(4);         
+        cbYear.setSelectedItem(0);         
      }
     
     public void cargarcbProfesores(){
@@ -146,11 +195,11 @@ public class GestionCursos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popBorrar = new javax.swing.JPopupMenu();
+        popEliminar = new javax.swing.JMenuItem();
         BackAndFooter5 = new javax.swing.JPanel();
         btnBack5 = new javax.swing.JButton();
         lblfooter3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblCursos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -167,6 +216,16 @@ public class GestionCursos extends javax.swing.JFrame {
         btnActualizarCurso = new javax.swing.JToggleButton();
         cbYear = new javax.swing.JComboBox<>();
         cbMaterias = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCursos = new javax.swing.JTable();
+
+        popEliminar.setText("jMenuItem1");
+        popEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popEliminarActionPerformed(evt);
+            }
+        });
+        popBorrar.add(popEliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -200,27 +259,6 @@ public class GestionCursos extends javax.swing.JFrame {
                     .addComponent(btnBack5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Materias", "Profesores", "Cupo Maximo", "Semestre", "Año"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblCursos);
-        if (tblCursos.getColumnModel().getColumnCount() > 0) {
-            tblCursos.getColumnModel().getColumn(0).setResizable(false);
-        }
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText("ID");
@@ -288,46 +326,60 @@ public class GestionCursos extends javax.swing.JFrame {
         cbMaterias.setToolTipText("");
         cbMaterias.setName(""); // NOI18N
 
+        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblCursos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(8, 8, 8)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(idCurso)
-                        .addComponent(txtCupoDisp)
-                        .addComponent(txtCupoMax)
-                        .addComponent(cbSemestre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnGuardarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
-            .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(8, 8, 8)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(idCurso)
+                                .addComponent(txtCupoDisp)
+                                .addComponent(txtCupoMax)
+                                .addComponent(cbSemestre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnGuardarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(64, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -359,13 +411,12 @@ public class GestionCursos extends javax.swing.JFrame {
                         .addComponent(btnGuardarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75))
+                        .addGap(68, 68, 68))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(13, 13, 13))
         );
 
         cbSemestre.getAccessibleContext().setAccessibleName("");
@@ -381,57 +432,72 @@ public class GestionCursos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBack5ActionPerformed
 
     private void btnGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCursoActionPerformed
-        // TODO add your handling code here:
-       // Validar que todos los campos estén llenos
-    if (cbMaterias.getSelectedIndex() == 0 || cbProfesor.getSelectedIndex() == 0 || 
-        txtCupoMax.getText().isEmpty() || txtCupoDisp.getText().isEmpty() || 
-        cbSemestre.getSelectedIndex() == 0 || cbYear.getSelectedIndex() == 4) {
+        // Validar que todos los campos estén llenos
+    if (cbMaterias.getSelectedIndex() == 0 || cbProfesor.getSelectedIndex() == 0
+            || txtCupoMax.getText().isEmpty() || txtCupoDisp.getText().isEmpty()
+            || cbSemestre.getSelectedIndex() == 0 || cbYear.getSelectedIndex() == 0) {
         JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Obtener valores de los campos
-    int idMateria = Integer.parseInt(cbMaterias.getSelectedItem().toString());
-    int idProfesor = Integer.parseInt(cbProfesor.getSelectedItem().toString());
+    // Obtener los valores de los campos
+    String nombreMateria = cbMaterias.getSelectedItem().toString();
+    String nombreProfesor = cbProfesor.getSelectedItem().toString();
     int cupoMaximo = Integer.parseInt(txtCupoMax.getText());
     int cupoDisponible = Integer.parseInt(txtCupoDisp.getText());
     String semestre = cbSemestre.getSelectedItem().toString();
     int anio = Integer.parseInt(cbYear.getSelectedItem().toString());
 
-    // Conexión y query
-    Connection cn = null;
-    PreparedStatement ps = null;
-
     try {
-        String sql = "INSERT INTO Cursos (ID_Materia, ID_Profesor, Cupo_Maximo, Cupo_Disponible, Semestre, Anio) VALUES (?, ?, ?, ?, ?, ?)";
-        ps = cn.prepareStatement(sql);
+        // Obtener el ID_Materia usando el nombre de la materia
+        String sqlMateria = "SELECT ID_Materia FROM Materias WHERE Nombre = ?";
+        PreparedStatement ps = cn.prepareStatement(sqlMateria);
+        ps.setString(1, nombreMateria);  // Establecer el valor para el parámetro 1 (nombre de la materia)
+        ResultSet rs = ps.executeQuery();
 
-        // Asignar parámetros
-        ps.setInt(1, idMateria);
-        ps.setInt(2, idProfesor);
-        ps.setInt(3, cupoMaximo);
-        ps.setInt(4, cupoDisponible);
-        ps.setString(5, semestre);
-        ps.setInt(6, anio);
+        int idMateria = 0;
+        if (rs.next()) {
+            idMateria = rs.getInt("ID_Materia");
+        }
 
-        // Ejecutar consulta
+        // Obtener el ID_Profesor usando el nombre del profesor
+        String sqlProfesor = "SELECT ID_Profesor FROM Profesores WHERE Nombre = ?";
+        ps = cn.prepareStatement(sqlProfesor);
+        ps.setString(1, nombreProfesor);  // Establecer el valor para el parámetro 1 (nombre del profesor)
+        rs = ps.executeQuery();
+
+        int idProfesor = 0;
+        if (rs.next()) {
+            idProfesor = rs.getInt("ID_Profesor");
+        }
+
+        // Verificar que se encontraron los IDs
+        if (idMateria == 0 || idProfesor == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron los IDs correspondientes a la materia o profesor.");
+            return;
+        }
+
+        // Insertar el curso en la base de datos utilizando los IDs de la materia y el profesor
+        String sqlInsert = "INSERT INTO Cursos (ID_Materia, ID_Profesor, Cupo_Maximo, Cupo_Disponible, Semestre, Anio) VALUES (?, ?, ?, ?, ?, ?)";
+        ps = cn.prepareStatement(sqlInsert);
+        ps.setInt(1, idMateria);  // Establecer el ID_Materia
+        ps.setInt(2, idProfesor); // Establecer el ID_Profesor
+        ps.setInt(3, cupoMaximo); // Establecer el Cupo_Maximo
+        ps.setInt(4, cupoDisponible); // Establecer el Cupo_Disponible
+        ps.setString(5, semestre); // Establecer el Semestre
+        ps.setInt(6, anio); // Establecer el Año
+
+        // Ejecutar la inserción
         int resultado = ps.executeUpdate();
-
         if (resultado > 0) {
             JOptionPane.showMessageDialog(this, "Curso guardado exitosamente");
-            limpiar(); // Llamada al método para limpiar los campos
+            limpiar(); // Llamar al método para limpiar los campos
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar el curso", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
-        try {
-            if (ps != null) ps.close();
-            if (cn != null) cn.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al cerrar la conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
     }//GEN-LAST:event_btnGuardarCursoActionPerformed
 
@@ -491,6 +557,24 @@ public class GestionCursos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnActualizarCursoActionPerformed
 
+    private void popEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popEliminarActionPerformed
+    try {
+            PreparedStatement ps = cn.prepareStatement("DELETE FROM Cursos WHERE ID_Curso ='"+idCurso.getText()+"'");
+            int respuesta = ps.executeUpdate();
+            if(respuesta>0){
+                JOptionPane.showMessageDialog(null, "Alumno eliminado");
+                limpiar();
+                mostrarTabla("");                       
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Seleccione una fila para borrar");
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(null, "Error al eliminar, contacte con el administrador");
+        }
+    }//GEN-LAST:event_popEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -545,6 +629,8 @@ public class GestionCursos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
+    private javax.swing.JPopupMenu popBorrar;
+    private javax.swing.JMenuItem popEliminar;
     private javax.swing.JTable tblCursos;
     private javax.swing.JTextField txtCupoDisp;
     private javax.swing.JTextField txtCupoMax;

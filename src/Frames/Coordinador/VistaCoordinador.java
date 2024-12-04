@@ -280,7 +280,8 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscripcionesActionPerformed
         // TODO add your handling code here:
-        
+        InscripcionesCO insc = new InscripcionesCO();
+        insc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnInscripcionesActionPerformed
 

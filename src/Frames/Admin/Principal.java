@@ -6,7 +6,6 @@ package Frames.Admin;
 
 import Frames.GestionProfesores;
 import Frames.GestionAlumnos;
-import Frames.Inscripciones;
 import Frames.Reportes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

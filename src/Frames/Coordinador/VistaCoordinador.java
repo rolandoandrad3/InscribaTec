@@ -70,6 +70,7 @@ public class VistaCoordinador extends javax.swing.JFrame {
         btnNotas = new javax.swing.JToggleButton();
         btnRegistroMaterias = new javax.swing.JToggleButton();
         btnGestionCursos = new javax.swing.JToggleButton();
+        btnInscripciones = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,17 +158,29 @@ public class VistaCoordinador extends javax.swing.JFrame {
             }
         });
 
+        btnInscripciones.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        btnInscripciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/inscribir.png"))); // NOI18N
+        btnInscripciones.setText("Inscripciones");
+        btnInscripciones.setToolTipText("Registro e Inscripcion de Estudiantes");
+        btnInscripciones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnInscripciones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInscripciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInscripcionesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNotas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnGestionCarreras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNotas, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(btnGestionCarreras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEstudiantes, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(btnInscripciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(83, 83, 83)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnProfesores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -192,7 +205,9 @@ public class VistaCoordinador extends javax.swing.JFrame {
                     .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegistroMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnGestionCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGestionCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInscripciones, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
 
@@ -218,7 +233,8 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstudiantesActionPerformed
         // TODO add your handling code here:
-        
+        RegistrarEstudianteCO re = new RegistrarEstudianteCO();
+        re.setVisible(true);        
         dispose();
     }//GEN-LAST:event_btnEstudiantesActionPerformed
 
@@ -230,13 +246,16 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnGestionCarrerasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCarrerasActionPerformed
         // TODO add your handling code here:
-       
+       RegistroCarreraCO rc = new RegistroCarreraCO();
+       rc.setVisible(true);              
         dispose();
     }//GEN-LAST:event_btnGestionCarrerasActionPerformed
 
     private void btnProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfesoresActionPerformed
         // TODO add your handling code here:
-        
+        RegistroProfesoresCO rp = new RegistroProfesoresCO();
+        rp.setVisible(true);
+        dispose();        
     }//GEN-LAST:event_btnProfesoresActionPerformed
 
     private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed
@@ -247,15 +266,23 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnRegistroMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroMateriasActionPerformed
         // TODO add your handling code here:
-        
+        RegistroMateriasCO rm = new RegistroMateriasCO();
+        rm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegistroMateriasActionPerformed
 
     private void btnGestionCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCursosActionPerformed
         // TODO add your handling code here:
-        
+        GestionCursosCO gc = new GestionCursosCO();
+        gc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnGestionCursosActionPerformed
+
+    private void btnInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscripcionesActionPerformed
+        // TODO add your handling code here:
+        
+        dispose();
+    }//GEN-LAST:event_btnInscripcionesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,6 +324,7 @@ public class VistaCoordinador extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnEstudiantes;
     private javax.swing.JToggleButton btnGestionCarreras;
     private javax.swing.JToggleButton btnGestionCursos;
+    private javax.swing.JToggleButton btnInscripciones;
     private javax.swing.JToggleButton btnNotas;
     private javax.swing.JToggleButton btnProfesores;
     private javax.swing.JToggleButton btnRegistroMaterias;

@@ -219,7 +219,7 @@ public class GestionCursos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCursos = new javax.swing.JTable();
 
-        popEliminar.setText("jMenuItem1");
+        popEliminar.setText("Eliminar");
         popEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popEliminarActionPerformed(evt);
@@ -334,6 +334,7 @@ public class GestionCursos extends javax.swing.JFrame {
 
             }
         ));
+        tblCursos.setComponentPopupMenu(popBorrar);
         jScrollPane1.setViewportView(tblCursos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -558,21 +559,40 @@ public class GestionCursos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarCursoActionPerformed
 
     private void popEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popEliminarActionPerformed
+    // Validar si hay una fila seleccionada en la tabla
+    int filaSeleccionada = tblCursos.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona un curso para eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Obtener el ID del curso de la fila seleccionada
+    int idCurso = Integer.parseInt(tblCursos.getValueAt(filaSeleccionada, 0).toString());
+
+    // Confirmación antes de eliminar
+    int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el curso con ID " + idCurso + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (confirmacion != JOptionPane.YES_OPTION) {
+        return; // Cancelar la operación si el usuario selecciona "No"
+    }
+
+    // Realizar la eliminación en la base de datos
     try {
-            PreparedStatement ps = cn.prepareStatement("DELETE FROM Cursos WHERE ID_Curso ='"+idCurso.getText()+"'");
-            int respuesta = ps.executeUpdate();
-            if(respuesta>0){
-                JOptionPane.showMessageDialog(null, "Alumno eliminado");
-                limpiar();
-                mostrarTabla("");                       
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Seleccione una fila para borrar");
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-            JOptionPane.showMessageDialog(null, "Error al eliminar, contacte con el administrador");
+        String sql = "DELETE FROM Cursos WHERE ID_Curso = ?";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idCurso);
+
+        int resultado = ps.executeUpdate();
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Curso eliminado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            mostrarTabla(""); // Método para actualizar la tabla después de eliminar
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el curso", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    } catch (SQLException e) {
+        System.err.println("Error al eliminar el curso: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al eliminar el curso. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }        
+        
     }//GEN-LAST:event_popEliminarActionPerformed
 
     /**

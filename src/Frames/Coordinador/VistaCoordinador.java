@@ -218,22 +218,19 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstudiantesActionPerformed
         // TODO add your handling code here:
-        RegistrarEstudianteCO gestionAlumnos = new RegistrarEstudianteCO();
-        gestionAlumnos.setVisible(true);
+        
         dispose();
     }//GEN-LAST:event_btnEstudiantesActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-        Reportes reportes = new Reportes();
-        reportes.setVisible(true);
+        
         dispose();
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnGestionCarrerasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCarrerasActionPerformed
         // TODO add your handling code here:
-        RegistroCarreraCO gestionCarreras = new RegistroCarreraCO();
-        gestionCarreras.setVisible(true);
+       
         dispose();
     }//GEN-LAST:event_btnGestionCarrerasActionPerformed
 
@@ -250,15 +247,13 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnRegistroMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroMateriasActionPerformed
         // TODO add your handling code here:
-        RegistroMateriasCO rm = new RegistroMateriasCO();
-        rm.setVisible(true);
+        
         dispose();
     }//GEN-LAST:event_btnRegistroMateriasActionPerformed
 
     private void btnGestionCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCursosActionPerformed
         // TODO add your handling code here:
-        GestionCursos gc = new GestionCursos();
-        gc.setVisible(true);
+        
         dispose();
     }//GEN-LAST:event_btnGestionCursosActionPerformed
 

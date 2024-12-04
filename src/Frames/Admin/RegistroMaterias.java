@@ -198,6 +198,7 @@ public class RegistroMaterias extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblMaterias.setComponentPopupMenu(popBorrar);
         tblMaterias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblMateriasMouseClicked(evt);
@@ -500,54 +501,39 @@ public class RegistroMaterias extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMateriasMouseClicked
 
     private void popEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popEliminarActionPerformed
-        // TODO add your handling code here:
-            // Obtener el ID de la materia seleccionada
-    int fila = tblMaterias.getSelectedRow();  // Obtener la fila seleccionada en la tabla
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(null, "Por favor seleccione una materia para eliminar.");
+        // Validar si hay una fila seleccionada en la tabla
+    int filaSeleccionada = tblMaterias.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una materia para eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    String idMateria = tblMaterias.getValueAt(fila, 0).toString();  // Obtener el ID de la materia desde la tabla
+    // Obtener el ID de la materia de la fila seleccionada
+    int idMateria = Integer.parseInt(tblMaterias.getValueAt(filaSeleccionada, 0).toString());
 
-    // Confirmación de eliminación
-    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar esta materia?", 
-                                                     "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        // Crear la consulta SQL para eliminar la materia
-        String sql = "DELETE FROM Materias WHERE ID_Materia = ?";
-
-        try {
-            // Establecer la conexión a la base de datos (asegúrate de tener la conexión abierta)
-            Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=InscribaTec", "usuario", "contraseña");
-
-            // Crear el PreparedStatement para ejecutar el DELETE
-            PreparedStatement pst = con.prepareStatement(sql);
-            
-            // Establecer el valor del ID_Materia
-            pst.setString(1, idMateria);
-
-            // Ejecutar el delete
-            int filasAfectadas = pst.executeUpdate();
-            
-            // Verificar si se eliminó alguna fila
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Materia eliminada correctamente.");
-                // Refrescar la tabla con los datos actualizados
-                mostrartabla("");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo eliminar la materia.");
-            }
-
-            // Cerrar la conexión
-            con.close();
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar la materia: " + ex.getMessage());
-        }
+    // Confirmación antes de eliminar
+    int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar la materia con ID " + idMateria + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (confirmacion != JOptionPane.YES_OPTION) {
+        return; // Cancelar la operación si el usuario selecciona "No"
     }
-        
+
+    // Realizar la eliminación en la base de datos
+    try {
+        String sql = "DELETE FROM Materias WHERE ID_Materia = ?";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idMateria);
+
+        int resultado = ps.executeUpdate();
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Materia eliminada exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            mostrartabla(""); // Método para actualizar la tabla después de eliminar
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al eliminar la materia", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al eliminar la materia: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al eliminar la materia. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_popEliminarActionPerformed
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped

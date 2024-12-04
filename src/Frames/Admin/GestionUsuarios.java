@@ -125,6 +125,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popBorrar = new javax.swing.JPopupMenu();
+        popEliminar = new javax.swing.JMenuItem();
         BackAndFooter5 = new javax.swing.JPanel();
         btnBack5 = new javax.swing.JButton();
         lblfooter3 = new javax.swing.JLabel();
@@ -145,6 +147,14 @@ public class GestionUsuarios extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         cbEstado = new javax.swing.JComboBox<>();
+
+        popEliminar.setText("Eliminar");
+        popEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popEliminarActionPerformed(evt);
+            }
+        });
+        popBorrar.add(popEliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -206,6 +216,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblUsuarios.setColumnSelectionAllowed(true);
+        tblUsuarios.setComponentPopupMenu(popBorrar);
         tblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblUsuariosMouseClicked(evt);
@@ -458,6 +470,41 @@ public class GestionUsuarios extends javax.swing.JFrame {
         this.cbEstado.setSelectedItem(this.tblUsuarios.getValueAt(fila, 4));
     }//GEN-LAST:event_tblUsuariosMouseClicked
 
+    private void popEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popEliminarActionPerformed
+    // Validar si hay una fila seleccionada en la tabla
+    int filaSeleccionada = tblUsuarios.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona un usuario para eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Obtener el ID del usuario de la fila seleccionada
+    int idUsuario = Integer.parseInt(tblUsuarios.getValueAt(filaSeleccionada, 0).toString());
+
+    // Confirmación antes de eliminar
+    int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el usuario con ID " + idUsuario + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (confirmacion != JOptionPane.YES_OPTION) {
+        return; // Cancelar la operación si el usuario selecciona "No"
+    }
+
+    // Realizar la eliminación en la base de datos
+    try {
+        String sql = "DELETE FROM Usuarios WHERE ID_Usuario = ?";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idUsuario);
+
+        int resultado = ps.executeUpdate();
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            mostrartabla(""); // Método para actualizar la tabla después de eliminar
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al eliminar el usuario: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al eliminar el usuario. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }    }//GEN-LAST:event_popEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -510,6 +557,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
+    private javax.swing.JPopupMenu popBorrar;
+    private javax.swing.JMenuItem popEliminar;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtIdUsuario;

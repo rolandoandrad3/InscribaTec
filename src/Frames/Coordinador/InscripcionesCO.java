@@ -262,8 +262,8 @@ public class InscripcionesCO extends javax.swing.JFrame {
 
     private void btnBack5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack5ActionPerformed
         // TODO add your handling code here:
-        Principal principal = new Principal();
-        principal.setVisible(true);
+        VistaCoordinador vc = new VistaCoordinador();
+        vc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack5ActionPerformed
 

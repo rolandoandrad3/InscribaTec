@@ -149,7 +149,6 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEstudiante = new javax.swing.JTable();
         txtBuscar = new javax.swing.JTextField();
-        btnRegCalificacion = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
         txtCUM = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -213,15 +212,6 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
             }
         });
 
-        btnRegCalificacion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnRegCalificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/registro_notas.png"))); // NOI18N
-        btnRegCalificacion.setText("Registrar calificaciones");
-        btnRegCalificacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegCalificacionActionPerformed(evt);
-            }
-        });
-
         btnImprimir.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
         btnImprimir.setText("Imprimir");
@@ -272,10 +262,9 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
-                        .addComponent(btnRegCalificacion)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnImprimir)))
+                        .addGap(207, 207, 207)
+                        .addComponent(btnImprimir)
+                        .addGap(99, 99, 99)))
                 .addContainerGap())
             .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -320,17 +309,17 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnImprimir)
-                            .addComponent(btnRegCalificacion)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnImprimir))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -344,13 +333,6 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
         vs.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack5ActionPerformed
-
-    private void btnRegCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCalificacionActionPerformed
-        // TODO add your handling code here:
-        RegistrarCalificacion rc = new RegistrarCalificacion();
-        rc.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_btnRegCalificacionActionPerformed
 
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
         // TODO add your handling code here:
@@ -401,7 +383,6 @@ public class ListarEstudiantesEst extends javax.swing.JFrame {
     private javax.swing.JPanel BackAndFooter5;
     private javax.swing.JButton btnBack5;
     private javax.swing.JButton btnImprimir;
-    private javax.swing.JButton btnRegCalificacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -25,37 +25,42 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtBuscar" min="-2" pref="250" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel9" alignment="1" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="txtBuscar" min="-2" pref="250" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtNombres" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="txtApellidos" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                              <Component id="txtCurso" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                              <Component id="txtEstado" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="txtFechaNac" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="txtCarnet" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="txtEmail" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="txtTelefono" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="txtCarrera" min="-2" pref="200" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtCurso" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                          <Component id="txtEstado" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -119,11 +124,6 @@
                           <Component id="txtTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel9" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="txtCarrera" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel8" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="txtEstado" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -251,11 +251,6 @@
         <Property name="text" type="java.lang.String" value="Estado"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel9">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Carrera"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="txtNombres">
     </Component>
     <Component class="javax.swing.JTextField" name="txtApellidos">
@@ -292,6 +287,9 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="txtBuscar">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtBuscarKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnRegCalificacion">
       <Properties>
@@ -317,8 +315,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Imprimir"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCarrera">
     </Component>
     <Component class="javax.swing.JTextField" name="txtCUM">
     </Component>

@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Frames;
+package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
+import Frames.RegistrarCalificacion;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -23,7 +24,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
      * Creates new form ListarEstudiantes
      */
     DefaultTableModel modelo= new DefaultTableModel();
-    int idEstudiante=0;
     public static int idCalificacion=0;
     
     
@@ -44,72 +44,78 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtCarnet.setEnabled(false);
         txtEmail.setEnabled(false);
         txtTelefono.setEnabled(false);
-        txtCarrera.setEnabled(false);
         txtEstado.setEnabled(false);
         txtCurso.setEnabled(false);
         txtCUM.setEnabled(false);
-        
-        idEstudiante=GestionAlumnos.idAlumno;
+        }
+
+    public void cerrar() {
         try {
-        // La consulta SQL para obtener toda la información del estudiante
-        String sql = "SELECT e.ID_Estudiante, e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
-                   + "e.Correo, e.Telefono, e.Estado AS Estado_Estudiante, "
-                   + "c.Nombre_Carrera, cur.Nombre_Curso, "
-                   + "i.ID_Inscripcion, i.Fecha_Inscripcion, i.Estado_Inscripcion, e.Cum "
+            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    confirmarsalida();
+                }
+            });
+        } catch (Exception e) {
+        }
+    }
+
+    public void confirmarsalida() {
+        int valor = JOptionPane.showConfirmDialog(this, "Desea cerrar la aplicacion?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (valor == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(null, "Cerrando Aplicacion", "", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }// Método para buscar estudiantes por Carnet
+    private void buscarPorCarnet(String carnet) {
+        try {
+        // Consulta SQL para buscar por Carnet
+        String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+                   + "e.Correo, e.Telefono, e.Estado, cur.Semestre "
                    + "FROM Estudiantes e "
-                   + "LEFT JOIN Carreras c ON e.ID_Carrera = c.Nombre_Carrera "
                    + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
                    + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
-                   + "WHERE e.ID_Estudiante = ?";
+                   + "WHERE e.Carnet LIKE ?";
 
-        // Preparar la consulta con el ID del estudiante
+        // Preparar la consulta
         PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, idEstudiante); // Reemplaza idEstudiante con el valor correspondiente
+        ps.setString(1, "%" + carnet + "%"); // Usar % para buscar coincidencias parciales
         ResultSet rs = ps.executeQuery();
-        
-        if(rs.next()){
-            setTitle("Información de Estudiante - " + rs.getString("Carnet") + " - Admin");
+
+        // Si se encuentra un resultado, llenar los campos
+        if (rs.next()) {
             txtNombres.setText(rs.getString("Nombre"));
             txtApellidos.setText(rs.getString("Apellido"));
             txtCarnet.setText(rs.getString("Carnet"));
             txtFechaNac.setText(rs.getDate("Fecha_Nacimiento").toString()); // Formato yyyy-MM-dd
             txtEmail.setText(rs.getString("Correo"));
             txtTelefono.setText(rs.getString("Telefono"));
-            txtCarrera.setText(rs.getString("Nombre_Carrera"));
-            txtEstado.setText(rs.getString("Estado_Estudiante"));
-            txtCurso.setText(rs.getString("Nombre_Curso"));
-            txtCUM.setText(rs.getString("Cum"));
+            txtEstado.setText(rs.getString("Estado"));
+            txtCurso.setText(rs.getString("Semestre"));
+            txtCUM.setText(""); // Puedes dejarlo vacío si no es necesario
+        } else {
+            // Limpiar los campos si no hay coincidencias
+            limpiarCampos();
         }
     } catch (SQLException e) {
-        System.err.println("Error al cargar datos en la tabla: " + e.getMessage());
-        System.err.println(e);
-        JOptionPane.showMessageDialog(this, "Error al cargar los datos. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+        System.err.println("Error al buscar por Carnet: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al buscar el estudiante. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
     }
         
-    }
-    
-
-    
-    
-        public void cerrar(){
-        try {
-            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            addWindowListener(new WindowAdapter() {
-             public void windowClosing(WindowEvent e){
-                 confirmarsalida();
-             }
-            });
-        } catch (Exception e) {
-        }
-     }
         
-     public void confirmarsalida(){
-         int valor = JOptionPane.showConfirmDialog(this,"Desea cerrar la aplicacion?","Advertencia",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-         if(valor==JOptionPane.YES_OPTION){
-             JOptionPane.showMessageDialog(null, "Cerrando Aplicacion","",JOptionPane.INFORMATION_MESSAGE );
-             System.exit(0);
-         } 
-     }
+}
+    private void limpiarCampos() {
+    txtNombres.setText("");
+    txtApellidos.setText("");
+    txtCarnet.setText("");
+    txtFechaNac.setText("");
+    txtEmail.setText("");
+    txtTelefono.setText("");
+    txtEstado.setText("");
+    txtCurso.setText("");
+    txtCUM.setText("");
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,7 +138,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         txtNombres = new javax.swing.JTextField();
         txtApellidos = new javax.swing.JTextField();
         txtFechaNac = new javax.swing.JTextField();
@@ -146,7 +151,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         btnRegCalificacion = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
-        txtCarrera = new javax.swing.JTextField();
         txtCUM = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
 
@@ -201,9 +205,13 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
         jLabel8.setText("Estado");
 
-        jLabel9.setText("Carrera");
-
         jScrollPane1.setViewportView(tblEstudiante);
+
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
+            }
+        });
 
         btnRegCalificacion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnRegCalificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/registro_notas.png"))); // NOI18N
@@ -226,34 +234,36 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel11)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
@@ -304,10 +314,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
@@ -345,6 +351,15 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegCalificacionActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        // TODO add your handling code here:
+        // Obtener el texto que el usuario está escribiendo
+        String valorBusqueda = txtBuscar.getText().trim() + evt.getKeyChar();
+
+        // Filtrar por Carnet
+        buscarPorCarnet(valorBusqueda);
+    }//GEN-LAST:event_txtBuscarKeyTyped
 
     /**
      * @param args the command line arguments
@@ -396,7 +411,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
     private javax.swing.JTable tblEstudiante;
@@ -404,7 +418,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCUM;
     private javax.swing.JTextField txtCarnet;
-    private javax.swing.JTextField txtCarrera;
     private javax.swing.JTextField txtCurso;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEstado;

@@ -385,6 +385,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextField1MousePressed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyTyped"/>
       </Events>
     </Component>

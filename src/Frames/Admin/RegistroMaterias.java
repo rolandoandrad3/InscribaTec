@@ -110,6 +110,69 @@ public class RegistroMaterias extends javax.swing.JFrame {
         }
     }
 
+    // Método para buscar materias por nombre
+
+    private void buscarMateriaPorNombre(String nombreMateria) {
+        try {
+        // Consulta SQL para buscar materias por nombre
+        String sql = "SELECT m.ID_Materia, m.Nombre_Materia, m.Codigo_Materia, c.Nombre_Carrera, m.Estado "
+                   + "FROM Materias m "
+                   + "INNER JOIN Carreras c ON m.ID_Carrera = c.ID_Carrera "
+                   + "WHERE m.Nombre_Materia LIKE ?";
+
+        // Preparar la consulta
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setString(1, "%" + nombreMateria + "%"); // Usar % para buscar coincidencias parciales
+        ResultSet rs = ps.executeQuery();
+
+        // Limpiar el modelo de la tabla antes de llenarla con nuevos datos
+        DefaultTableModel model = (DefaultTableModel) tblMaterias.getModel();
+        model.setRowCount(0);
+
+        // Si se encuentra un resultado, llenar los campos y la tabla
+        boolean found = false;
+        while (rs.next()) {
+            found = true;
+            // Llenar los campos con el primer resultado
+            if (model.getRowCount() == 0) {
+                txtNombreMateria.setText(rs.getString("Nombre_Materia"));
+                txtCodMateria.setText(rs.getString("Codigo_Materia"));
+                cbCarrera.setSelectedItem(rs.getString("Nombre_Carrera"));
+                cbEstadoMateria.setSelectedItem(rs.getString("Estado")); // Llenar el combo de Estado
+            }
+
+            // Llenar la tabla
+            Object[] fila = new Object[]{
+                rs.getInt("ID_Materia"),
+                rs.getString("Nombre_Materia"),
+                rs.getString("Codigo_Materia"),
+                rs.getString("Nombre_Carrera"),
+                rs.getString("Estado")
+            };
+            model.addRow(fila);
+        }
+
+        // Si no se encontró nada, limpiar los campos
+        if (!found) {
+            limpiarCamposMateria();
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Error al buscar materia por nombre: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al buscar la materia. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+// Método para limpiar los campos si no hay resultados
+
+    private void limpiarCamposMateria() {
+        txtNombreMateria.setText("");
+    txtCodMateria.setText("");
+    cbCarrera.setSelectedIndex(0); // Reiniciar selección de carrera
+    cbEstadoMateria.setSelectedIndex(0); // Reiniciar selección de estado
+    DefaultTableModel model = (DefaultTableModel) tblMaterias.getModel();
+    model.setRowCount(0); // Vaciar la tabla
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -257,6 +320,11 @@ public class RegistroMaterias extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/buscar.png"))); // NOI18N
         jLabel6.setText("Buscar:");
 
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTextField1MousePressed(evt);
+            }
+        });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField1KeyTyped(evt);
@@ -538,7 +606,16 @@ public class RegistroMaterias extends javax.swing.JFrame {
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         // Falta poner la logica de buscar
+        // Obtener el texto ingresado en tiempo real
+        String valorBusqueda = jTextField1.getText().trim() + evt.getKeyChar();
+
+        // Realizar la búsqueda
+        buscarMateriaPorNombre(valorBusqueda);
     }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1MousePressed
 
     /**
      * @param args the command line arguments

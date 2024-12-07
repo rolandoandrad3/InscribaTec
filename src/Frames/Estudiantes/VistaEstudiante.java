@@ -5,7 +5,7 @@
 package Frames.Estudiantes;
 
 import Frames.Admin.Principal;
-import Frames.ListarEstudiantes;
+import Frames.Admin.ListarEstudiantes;
 import Frames.Reportes;
 
 /**
@@ -156,7 +156,7 @@ public class VistaEstudiante extends javax.swing.JFrame {
 
     private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed
         // TODO add your handling code here:
-        ListarEstudiantes ls = new ListarEstudiantes();
+        ListarEstudiantesEst ls = new ListarEstudiantesEst();
         ls.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnNotasActionPerformed

@@ -273,8 +273,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfesoresActionPerformed
         // TODO add your handling code here:
-        GestionProfesores gestionProfesores = new GestionProfesores();
-        gestionProfesores.setVisible(true);
+        RegistroProfesores rp = new RegistroProfesores();
+        rp.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnProfesoresActionPerformed
 
@@ -294,8 +294,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnGestionMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionMateriasActionPerformed
         // TODO add your handling code here:
-        GestionProfesores gestionProfesores = new GestionProfesores();
-        gestionProfesores.setVisible(true);
+        RegistroMaterias rm = new RegistroMaterias();
+        rm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnGestionMateriasActionPerformed
 

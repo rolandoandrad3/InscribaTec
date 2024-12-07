@@ -4,7 +4,7 @@
  */
 package Frames.Profesores;
 
-import Frames.ListarEstudiantes;
+import Frames.Admin.ListarEstudiantes;
 import Frames.Reportes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -136,7 +136,7 @@ public class VistaProfesor extends javax.swing.JFrame {
 
     private void btnEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstudiantesActionPerformed
         // TODO add your handling code here:
-        ListarEstudiantes ls = new ListarEstudiantes();
+        ListarEstudiantesProf ls = new ListarEstudiantesProf();
         ls.setVisible(true);
     }//GEN-LAST:event_btnEstudiantesActionPerformed
 

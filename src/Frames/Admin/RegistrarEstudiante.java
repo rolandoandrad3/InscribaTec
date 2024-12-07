@@ -697,8 +697,8 @@ public class RegistrarEstudiante extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        GestionAlumnos ga = new GestionAlumnos();
-        ga.setVisible(true);
+        ListarEstudiantes le = new ListarEstudiantes();
+        le.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

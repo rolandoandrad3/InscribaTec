@@ -4,6 +4,7 @@
  */
 package Frames;
 
+import Frames.Admin.ListarEstudiantes;
 import Clases.Conectar;
 import Frames.Admin.Principal;
 import java.awt.event.MouseAdapter;
@@ -33,50 +34,44 @@ public class GestionAlumnos extends javax.swing.JFrame {
         setLocationRelativeTo(null); 
         // Opcional: Establecer un título para la ventana
         setTitle("Registro de Calificaciones - Admin");
+        mostrarTabla("");
         cerrar();
-        
-        try {
-            PreparedStatement ps = cn.prepareStatement("SELECT * FROM Estudiantes");
-            ResultSet rs = ps.executeQuery();
-            tblGestionAlumnos = new JTable(model);
-            jScrollPane1.setViewportView(tblGestionAlumnos);
-            
-            model.addColumn("ID");
-            model.addColumn("Nombres");
-            model.addColumn("Apellidos");
-            model.addColumn("Carnet");
-            model.addColumn("Email");
-            model.addColumn("Telefono"); 
-            
-            while(rs.next()){
-                Object[] fila = new Object[6];
-                for (int i = 0; i < 6; i++) {
-                    fila[i]=rs.getObject(i+1);
-                }
-                model.addRow(fila);
-            }
-            cn.close();
-        } catch (SQLException e) {
-            System.err.println(e);
-            System.err.println("Error en el llenado de tabla.");
-        }
+        System.out.println("antes del click ");
+       
         ///------------------------------------------------------------------
+        System.out.println("dar click");
         tblGestionAlumnos.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                int fila_point = tblGestionAlumnos.rowAtPoint(e.getPoint());
-                int columna_point = 0;
-                if (fila_point>-1) {{
-                    idAlumno=(int)model.getValueAt(fila_point, columna_point);
-                    ListarEstudiantes infEstudiante = new ListarEstudiantes();
-                    infEstudiante.setVisible(true);
-                    dispose();
+                // Obtener la fila seleccionada
+            int fila_point = tblGestionAlumnos.rowAtPoint(e.getPoint());
+            
+            // Verificar que se haya seleccionado una fila válida
+            if (fila_point > -1) {
+                try {
+                    // Obtener el ID_Estudiante de la primera columna de la fila seleccionada
+                    Object value = model.getValueAt(fila_point, 0); // Columna 0 corresponde a ID_Estudiante
+                    if (value != null && value instanceof Integer) {
+                        idAlumno = (int) value; // Asignamos el ID_Estudiante
+
+                        // Mostrar información y cambiar a la siguiente ventana
+                        System.out.println("ID del Alumno seleccionado: " + idAlumno);
+                        ListarEstudiantes infEstudiante = new ListarEstudiantes();
+                        infEstudiante.setVisible(true);
+                        dispose(); // Cerrar la ventana actual si es necesario
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El ID del estudiante no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al seleccionar el ID del alumno: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                    
-                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
+    });
     }
+    
         public void cerrar(){
         try {
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -96,6 +91,50 @@ public class GestionAlumnos extends javax.swing.JFrame {
              System.exit(0);
          } 
      }
+     public void mostrarTabla(String valor) {
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("ID");
+    modelo.addColumn("Nombre");
+    modelo.addColumn("Apellido");
+    modelo.addColumn("Carnet");
+    modelo.addColumn("Fecha de Nacimiento");
+    modelo.addColumn("Correo");
+    modelo.addColumn("Telefono");
+    modelo.addColumn("Estado");
+
+    tblGestionAlumnos.setModel(modelo);
+
+    // Consulta SQL para filtrar por nombre, apellido o carnet
+    String sql = "SELECT ID_Estudiante, Nombre, Apellido, Carnet, Fecha_Nacimiento, Correo, Telefono, Estado " +
+                 "FROM Estudiantes " +
+                 "WHERE CONCAT(Nombre, ' ', Apellido, ' ', Carnet) LIKE ?";
+
+    try {
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setString(1, "%" + valor + "%"); // Agregar el valor de búsqueda entre % para usar LIKE
+
+        ResultSet rs = ps.executeQuery();
+
+        // Llenar el modelo de la tabla con los datos obtenidos
+        while (rs.next()) {
+            Object[] fila = new Object[8];
+            fila[0] = rs.getInt("ID_Estudiante");
+            fila[1] = rs.getString("Nombre");
+            fila[2] = rs.getString("Apellido");
+            fila[3] = rs.getString("Carnet");
+            fila[4] = rs.getString("Fecha_Nacimiento");
+            fila[5] = rs.getString("Correo");
+            fila[6] = rs.getString("Telefono");
+            fila[7] = rs.getString("Estado");
+            modelo.addRow(fila);
+        }
+
+        tblGestionAlumnos.setModel(modelo); // Asignar el modelo a la tabla
+    } catch (SQLException e) {
+        System.err.println("Error al cargar los datos: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -155,9 +194,20 @@ public class GestionAlumnos extends javax.swing.JFrame {
 
             }
         ));
+        tblGestionAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGestionAlumnosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblGestionAlumnos);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/buscar.png"))); // NOI18N
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,6 +249,18 @@ public class GestionAlumnos extends javax.swing.JFrame {
         principal.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack5ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // Obtener el texto ingresado en el campo de búsqueda
+        String valorBusqueda = jTextField1.getText();
+
+    // Llamar al método que carga los datos en la tabla filtrados por el valor de búsqueda
+        mostrarTabla(valorBusqueda);
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void tblGestionAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGestionAlumnosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblGestionAlumnosMouseClicked
 
     /**
      * @param args the command line arguments

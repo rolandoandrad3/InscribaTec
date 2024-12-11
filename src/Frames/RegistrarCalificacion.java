@@ -9,6 +9,7 @@ import Frames.Admin.ListarEstudiantes;
 import Frames.Admin.Principal;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,9 +45,9 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         cargarcbMaterias();
         cargarDatosCarnet("");
 
-        TextPrompt tarea = new TextPrompt("Ingresar tarea", txtTarea);
+        
         TextPrompt calificacion = new TextPrompt("Ingresar calificacion", txtCalificacion);
-        TextPrompt notas = new TextPrompt("Ingresar notas de la materia", txtNotas);
+        TextPrompt notas = new TextPrompt("Ingresar comentarios de la nota - 200 caracteres max", txtNotas);
 
         txtCarnet.setEditable(false);
 
@@ -131,15 +132,13 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtTarea = new javax.swing.JTextField();
         txtCalificacion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtNotas = new javax.swing.JTextArea();
         cbMaterias = new javax.swing.JComboBox<>();
         btnGuardarNotas = new javax.swing.JToggleButton();
-        btnActualizarNotas = new javax.swing.JToggleButton();
-        cbCarnets = new javax.swing.JComboBox<>();
         txtCarnet = new javax.swing.JTextField();
+        cbTareas = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -189,8 +188,6 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setText("Notas:");
 
-        txtTarea.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-
         txtCalificacion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         txtNotas.setColumns(20);
@@ -211,23 +208,16 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
             }
         });
 
-        btnActualizarNotas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnActualizarNotas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/update.png"))); // NOI18N
-        btnActualizarNotas.setText("Actualizar");
-        btnActualizarNotas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnActualizarNotas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarNotasActionPerformed(evt);
-            }
-        });
+        cbTareas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbTareas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona la actividad", "Tarea 1 - 25%", "Tarea 2 - 25%", "Parcial - 50%" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(BackAndFooter6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(151, 151, 151)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -235,20 +225,14 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnGuardarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnActualizarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGuardarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1)
                     .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cbCarnets, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtTarea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(117, 117, 117))
+                    .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTareas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,12 +240,11 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cbCarnets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtTarea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTareas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -272,15 +255,11 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
                     .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(69, 69, 69))
+                    .addComponent(jLabel5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnActualizarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(BackAndFooter6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -296,12 +275,44 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBack6ActionPerformed
 
     private void btnGuardarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarNotasActionPerformed
-        
-    }//GEN-LAST:event_btnGuardarNotasActionPerformed
+        // Validaciones y obtención de datos
+        String carnet = txtCarnet.getText();
+        String actividad = cbTareas.getSelectedItem().toString(); // Asumimos que 'cbTareas' contiene las actividades
+        String materia = cbMaterias.getSelectedItem().toString(); // 'cbMaterias' contiene los nombres de las materias
+        BigDecimal calificacion = new BigDecimal(txtCalificacion.getText());
+        String comentarios = txtNotas.getText();
 
-    private void btnActualizarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarNotasActionPerformed
-        
-    }//GEN-LAST:event_btnActualizarNotasActionPerformed
+        try {
+            String sql = "INSERT INTO Notas (Carnet, Actividad, Nombre_Materia, Calificacion, Comentarios) "
+                    + "VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setString(1, carnet);
+            ps.setString(2, actividad);
+            ps.setString(3, materia);  // Nombre_Materia como la clave foránea
+            ps.setBigDecimal(4, calificacion);
+            ps.setString(5, comentarios);
+
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Nota guardada correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar la nota.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al guardar la nota: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al guardar la nota. Contacte al administrador.");
+        }
+    }
+
+// Método para limpiar los campos
+private void limpiarCampos() {
+    txtCarnet.setText("");
+    cbTareas.setSelectedIndex(0);  // Reiniciar selección de tarea
+    cbMaterias.setSelectedIndex(0);  // Reiniciar selección de materia
+    txtCalificacion.setText("");
+    txtNotas.setText("");  // Limpiar el campo de comentarios
+    }//GEN-LAST:event_btnGuardarNotasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -340,11 +351,10 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackAndFooter6;
-    private javax.swing.JToggleButton btnActualizarNotas;
     private javax.swing.JButton btnBack6;
     private javax.swing.JToggleButton btnGuardarNotas;
-    private javax.swing.JComboBox<String> cbCarnets;
     private javax.swing.JComboBox<String> cbMaterias;
+    private javax.swing.JComboBox<String> cbTareas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -355,7 +365,6 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
     private javax.swing.JTextField txtCalificacion;
     private javax.swing.JTextField txtCarnet;
     private javax.swing.JTextArea txtNotas;
-    private javax.swing.JTextField txtTarea;
     // End of variables declaration//GEN-END:variables
     Conectar conectado = new Conectar();
     Connection cn = conectado.conexion();

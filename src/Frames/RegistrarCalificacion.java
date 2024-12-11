@@ -4,9 +4,15 @@
  */
 package Frames;
 
+import Clases.Conectar;
+import Frames.Admin.ListarEstudiantes;
 import Frames.Admin.Principal;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
@@ -16,12 +22,18 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  */
 public class RegistrarCalificacion extends javax.swing.JFrame {
 
+    int idAlumno = 0;
+    String carnetAlummno = "";
+    String nombreAlumno = "";
+    String materia = "";
+    
+    
     /**
      * Creates new form RegistrarCalificacion
      */
     public RegistrarCalificacion() {
         initComponents();
-        setSize(1000, 600);
+        setSize(800, 600);
         // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);
         // Evitar que la ventana sea redimensionable
@@ -29,7 +41,22 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         // Opcional: Establecer un título para la ventana
         setTitle("Registrar Calificaciones - Admin");
         cerrar();
+        cargarcbMaterias();
+        
+        TextPrompt tarea = new TextPrompt("Ingresar tarea", txtTarea);
+        TextPrompt calificacion = new TextPrompt("Ingresar calificacion", txtCalificacion);
+        TextPrompt notas = new TextPrompt("Ingresar notas de la materia", txtNotas);
+        
+        txtCarnet.setEditable(false);
+        
+        idAlumno = ListarEstudiantes.idAlumno;    
+        
+        
     }
+    public void cargarDatosCarnet(String carnet) {
+    txtCarnet.setText(carnet); // Muestra el carnet recibido en el campo de texto
+    txtCarnet.setEditable(false); // Bloquea la edición del campo
+}
     
     public void cerrar(){
         try {
@@ -50,6 +77,41 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
              System.exit(0);
          } 
      }
+     public void cargarcbMaterias() {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            // Consulta para obtener los nombres de las materias
+            String sql = "SELECT Nombre_Materia FROM Materias";
+            ps = cn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            // Limpiar el JComboBox antes de llenarlo
+            cbMaterias.removeAllItems();
+            cbMaterias.addItem("Seleccione una materia"); // Opción por defecto
+
+            // Llenar el JComboBox con los nombres de las materias
+            while (rs.next()) {
+                cbMaterias.addItem(rs.getString("Nombre_Materia"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar materias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar la conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,6 +125,20 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         BackAndFooter6 = new javax.swing.JPanel();
         btnBack6 = new javax.swing.JButton();
         lblfooter3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtTarea = new javax.swing.JTextField();
+        txtCalificacion = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtNotas = new javax.swing.JTextArea();
+        cbMaterias = new javax.swing.JComboBox<>();
+        btnGuardarNotas = new javax.swing.JToggleButton();
+        btnActualizarNotas = new javax.swing.JToggleButton();
+        cbCarnets = new javax.swing.JComboBox<>();
+        txtCarnet = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,7 +159,7 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
             BackAndFooter6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackAndFooter6Layout.createSequentialGroup()
                 .addComponent(btnBack6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 299, Short.MAX_VALUE)
                 .addComponent(lblfooter3)
                 .addContainerGap())
         );
@@ -97,16 +173,113 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setText("Estudiante:");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Tarea:");
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel3.setText("Materia:");
+
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setText("Calificacion:");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel5.setText("Notas:");
+
+        txtTarea.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        txtCalificacion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        txtNotas.setColumns(20);
+        txtNotas.setRows(5);
+        jScrollPane1.setViewportView(txtNotas);
+
+        cbMaterias.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbMaterias.setToolTipText("");
+        cbMaterias.setName(""); // NOI18N
+
+        btnGuardarNotas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnGuardarNotas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
+        btnGuardarNotas.setText("Guardar");
+        btnGuardarNotas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnGuardarNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarNotasActionPerformed(evt);
+            }
+        });
+
+        btnActualizarNotas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnActualizarNotas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/update.png"))); // NOI18N
+        btnActualizarNotas.setText("Actualizar");
+        btnActualizarNotas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizarNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarNotasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(BackAndFooter6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnGuardarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnActualizarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbCarnets, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTarea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(117, 117, 117))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(471, Short.MAX_VALUE)
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cbCarnets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTarea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(69, 69, 69))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnActualizarNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(BackAndFooter6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -120,6 +293,14 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         principal.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack6ActionPerformed
+
+    private void btnGuardarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarNotasActionPerformed
+        
+    }//GEN-LAST:event_btnGuardarNotasActionPerformed
+
+    private void btnActualizarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarNotasActionPerformed
+        
+    }//GEN-LAST:event_btnActualizarNotasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,10 +338,24 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel BackAndFooter5;
     private javax.swing.JPanel BackAndFooter6;
-    private javax.swing.JButton btnBack5;
+    private javax.swing.JToggleButton btnActualizarNotas;
     private javax.swing.JButton btnBack6;
+    private javax.swing.JToggleButton btnGuardarNotas;
+    private javax.swing.JComboBox<String> cbCarnets;
+    private javax.swing.JComboBox<String> cbMaterias;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
+    private javax.swing.JTextField txtCalificacion;
+    private javax.swing.JTextField txtCarnet;
+    private javax.swing.JTextArea txtNotas;
+    private javax.swing.JTextField txtTarea;
     // End of variables declaration//GEN-END:variables
+    Conectar conectado = new Conectar();
+    Connection cn = conectado.conexion();
 }

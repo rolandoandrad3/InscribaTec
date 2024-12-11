@@ -7,10 +7,19 @@ package Frames.Coordinador;
 import Clases.Conectar;
 import Frames.Admin.Principal;
 import Frames.RegistrarCalificacion;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
@@ -127,6 +136,7 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel11 = new javax.swing.JLabel();
+        btnImprimir = new javax.swing.JButton();
         BackAndFooter5 = new javax.swing.JPanel();
         btnBack5 = new javax.swing.JButton();
         lblfooter3 = new javax.swing.JLabel();
@@ -150,13 +160,21 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
         tblEstudiante = new javax.swing.JTable();
         txtBuscar = new javax.swing.JTextField();
         btnRegCalificacion = new javax.swing.JButton();
-        btnImprimir = new javax.swing.JButton();
         txtCUM = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/buscar.png"))); // NOI18N
+
+        btnImprimir.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
+        btnImprimir.setText("Imprimir");
+        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirActionPerformed(evt);
+            }
+        });
 
         btnBack5.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         btnBack5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/back.png"))); // NOI18N
@@ -222,10 +240,6 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
             }
         });
 
-        btnImprimir.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
-        btnImprimir.setText("Imprimir");
-
         jLabel10.setText("CUM");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -266,16 +280,16 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 80, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(60, 60, 60)
                         .addComponent(btnRegCalificacion)
                         .addGap(18, 18, 18)
-                        .addComponent(btnImprimir)))
+                        .addComponent(btnImprimir))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
             .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -283,7 +297,7 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,18 +333,16 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnImprimir)
-                            .addComponent(btnRegCalificacion)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRegCalificacion)
+                        .addComponent(btnImprimir))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -360,6 +372,122 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
         // Filtrar por Carnet
         buscarPorCarnet(valorBusqueda);
     }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+        Document documento = new Document();
+        Calendar calendario = Calendar.getInstance();
+        Date fecha = new Date(calendario.getTimeInMillis());
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String verfecha = formato.format(fecha);
+
+        try {
+            // Ruta donde se generará el archivo
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/"
+                + txtNombres.getText() + "_" + txtApellidos.getText() + "_" + txtCarnet.getText() + ".pdf"));
+
+        // Crear encabezado y fecha
+        Paragraph parrafo = new Paragraph();
+        parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+        parrafo.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
+        parrafo.add("Información del Estudiante\n\n");
+
+        Paragraph poner_fecha = new Paragraph();
+        poner_fecha.setAlignment(Paragraph.ALIGN_RIGHT);
+        poner_fecha.add("Fecha: " + verfecha + "\n\n");
+
+        // Abrir documento y añadir contenido
+        documento.open();
+        documento.add(parrafo);
+        documento.add(poner_fecha);
+
+        // Crear tabla para mostrar la información del estudiante
+        PdfPTable tablaAlumno = new PdfPTable(7); // 7 columnas
+        tablaAlumno.addCell("Nombres");
+        tablaAlumno.addCell("Apellidos");
+        tablaAlumno.addCell("Carnet");
+        tablaAlumno.addCell("Fecha de Nacimiento");
+        tablaAlumno.addCell("Email");
+        tablaAlumno.addCell("Teléfono");
+        tablaAlumno.addCell("Semestre");
+
+        try {
+            // Consulta para obtener la información del estudiante
+            String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+            + "e.Correo, e.Telefono, cur.Semestre "
+            + "FROM Estudiantes e "
+            + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
+            + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
+            + "WHERE e.Carnet = ?";
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setString(1, txtCarnet.getText());
+            ResultSet rs = ps.executeQuery();
+
+            // Llenar la tabla con los resultados
+            if (rs.next()) {
+                tablaAlumno.addCell(rs.getString("Nombre"));
+                tablaAlumno.addCell(rs.getString("Apellido"));
+                tablaAlumno.addCell(rs.getString("Carnet"));
+                tablaAlumno.addCell(rs.getDate("Fecha_Nacimiento").toString());
+                tablaAlumno.addCell(rs.getString("Correo"));
+                tablaAlumno.addCell(rs.getString("Telefono"));
+                tablaAlumno.addCell(rs.getString("Semestre"));
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró información para el estudiante con el carnet proporcionado.");
+                return;
+            }
+
+            documento.add(tablaAlumno); // Añadir tabla al documento
+
+            // Sección de notas
+            Paragraph parrafo2 = new Paragraph();
+            parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo2.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
+            parrafo2.add("\n\nNotas Registradas\n\n");
+            documento.add(parrafo2);
+
+            PdfPTable tablaNotas = new PdfPTable(3); // Tres columnas: Materia, Nota, Anotaciones
+            tablaNotas.addCell("Materia");
+            tablaNotas.addCell("Calificación");
+            tablaNotas.addCell("Anotaciones");
+
+            try {
+                // Consulta para obtener las notas
+                String sqlNotas = "SELECT m.Nombre_Materia, n.Calificacion, n.Anotaciones "
+                + "FROM Notas n "
+                + "INNER JOIN Materias m ON n.ID_Materia = m.ID_Materia "
+                + "WHERE n.ID_Estudiante = ?";
+                PreparedStatement psNotas = cn.prepareStatement(sqlNotas);
+                psNotas.setString(1, txtCarnet.getText());
+                ResultSet rsNotas = psNotas.executeQuery();
+
+                // Llenar la tabla con los resultados
+                while (rsNotas.next()) {
+                    tablaNotas.addCell(rsNotas.getString("Nombre_Materia"));
+                    tablaNotas.addCell(rsNotas.getString("Calificacion"));
+                    tablaNotas.addCell(rsNotas.getString("Anotaciones"));
+                }
+
+                documento.add(tablaNotas); // Añadir tabla de notas al documento
+
+            } catch (SQLException e) {
+                System.err.println("Error al obtener las notas del estudiante: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error al obtener las notas. Contacte al administrador.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener información del estudiante: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al obtener información del estudiante. Contacte al administrador.");
+        }
+
+        documento.close();
+        JOptionPane.showMessageDialog(this, "Documento generado con éxito en el escritorio.");
+
+        } catch (Exception e) {
+            System.err.println("Error al generar el documento PDF: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al generar el documento. Contacte al administrador.");
+        }
+    }//GEN-LAST:event_btnImprimirActionPerformed
 
     /**
      * @param args the command line arguments

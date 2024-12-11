@@ -35,6 +35,10 @@ public class ListarEstudiantes extends javax.swing.JFrame {
     DefaultTableModel modelo= new DefaultTableModel();
     public static int idCalificacion=0;
     
+    public String carnet="";
+    
+    public static int idAlumno = 0;
+    
     
     public ListarEstudiantes() {
         initComponents();
@@ -57,6 +61,33 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtCurso.setEnabled(false);
         txtCUM.setEnabled(false);
         }
+    
+    private boolean verificarCarnetEnDB(String carnet) {
+    boolean existe = false;
+
+    // Agregar mensaje para verificar el valor recibido
+    System.out.println("Carnet recibido: " + carnet);
+
+    String query = "SELECT COUNT(*) AS Total FROM Estudiantes WHERE Carnet = ?";
+
+    try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=tuDB", "usuario", "contraseña");
+         PreparedStatement ps = con.prepareStatement(query)) {
+
+        ps.setString(1, carnet.trim()); // Asegúrate de eliminar espacios en blanco
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            int total = rs.getInt("Total");
+            System.out.println("Resultados encontrados: " + total);
+            existe = total > 0;
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al consultar la base de datos: " + ex.getMessage());
+    }
+
+    return existe;
+}
 
     public void cerrar() {
         try {
@@ -69,6 +100,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
+    
 
     public void confirmarsalida() {
         int valor = JOptionPane.showConfirmDialog(this, "Desea cerrar la aplicacion?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -103,7 +135,11 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             txtEstado.setText(rs.getString("Estado"));
             txtCurso.setText(rs.getString("Semestre"));
             txtCUM.setText(""); // Puedes dejarlo vacío si no es necesario
-        } else {
+            
+            carnet = rs.getString("carnet");
+            
+        } 
+        else {
             // Limpiar los campos si no hay coincidencias
             limpiarCampos();
         }
@@ -361,9 +397,25 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
     private void btnRegCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCalificacionActionPerformed
         // TODO add your handling code here:
-        RegistrarCalificacion rc = new RegistrarCalificacion();
-        rc.setVisible(true);
-        dispose();
+      
+        
+                
+    if (!carnet.isEmpty()) {
+        // Verificar que el carnet existe en la base de datos
+        if (verificarCarnetEnDB(carnet)) {
+            // Crear una nueva instancia de RegistrarCalificacion
+            RegistrarCalificacion ventana = new RegistrarCalificacion();
+            ventana.cargarDatosCarnet(carnet); // Pasar el carnet al formulario
+            ventana.setVisible(true);
+            this.dispose(); // Cerrar la ventana actual si es necesario
+        } else {
+            JOptionPane.showMessageDialog(this, "El carnet no existe en la base de datos.");
+            
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un carnet válido.");
+        System.out.println("traigo el carnet" + carnet);
+    }
     }//GEN-LAST:event_btnRegCalificacionActionPerformed
 
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
@@ -377,113 +429,118 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         Document documento = new Document();
-    Calendar calendario = Calendar.getInstance();
-    Date fecha = new Date(calendario.getTimeInMillis());
-    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-    String verfecha = formato.format(fecha);
-
-    try {
-        // Ruta donde se generará el archivo
-        String ruta = System.getProperty("user.home");
-        PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/"
-                + txtNombres.getText() + "_" + txtApellidos.getText() + "_" + txtCarnet.getText() + ".pdf"));
-
-        // Crear encabezado y fecha
-        Paragraph parrafo = new Paragraph();
-        parrafo.setAlignment(Paragraph.ALIGN_CENTER);
-        parrafo.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
-        parrafo.add("Información del Estudiante\n\n");
-
-        Paragraph poner_fecha = new Paragraph();
-        poner_fecha.setAlignment(Paragraph.ALIGN_RIGHT);
-        poner_fecha.add("Fecha: " + verfecha + "\n\n");
-
-        // Abrir documento y añadir contenido
-        documento.open();
-        documento.add(parrafo);
-        documento.add(poner_fecha);
-
-        // Crear tabla para mostrar la información del estudiante
-        PdfPTable tablaAlumno = new PdfPTable(7); // Cambiar según el número de columnas
-        tablaAlumno.addCell("Nombres");
-        tablaAlumno.addCell("Apellidos");
-        tablaAlumno.addCell("Carnet");
-        tablaAlumno.addCell("Fecha de Nacimiento");
-        tablaAlumno.addCell("Email");
-        tablaAlumno.addCell("Teléfono");
-        tablaAlumno.addCell("Semestre");
+        Calendar calendario = Calendar.getInstance();
+        Date fecha = new Date(calendario.getTimeInMillis());
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String verfecha = formato.format(fecha);
 
         try {
-            // Consulta para obtener la información del estudiante
-            String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
-                    + "e.Correo, e.Telefono, cur.Semestre "
-                    + "FROM Estudiantes e "
-                    + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
-                    + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
-                    + "WHERE e.Carnet = ?";
-            PreparedStatement ps = cn.prepareStatement(sql);
-            ps.setString(1, txtCarnet.getText()); // Carnet ingresado o seleccionado
-            ResultSet rs = ps.executeQuery();
+            // Ruta donde se generará el archivo
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/"
+                    + txtNombres.getText() + "_" + txtApellidos.getText() + "_" + txtCarnet.getText() + ".pdf"));
 
-            // Llenar la tabla con los resultados
-            if (rs.next()) {
-                tablaAlumno.addCell(rs.getString("Nombre"));
-                tablaAlumno.addCell(rs.getString("Apellido"));
-                tablaAlumno.addCell(rs.getString("Carnet"));
-                tablaAlumno.addCell(rs.getDate("Fecha_Nacimiento").toString());
-                tablaAlumno.addCell(rs.getString("Correo"));
-                tablaAlumno.addCell(rs.getString("Telefono"));
-                tablaAlumno.addCell(rs.getString("Semestre"));
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró información para el estudiante con el carnet proporcionado.");
-                return;
-            }
+            // Crear encabezado y fecha
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
+            parrafo.add("Información del Estudiante\n\n");
 
-            documento.add(tablaAlumno); // Añadir tabla al documento
+            Paragraph poner_fecha = new Paragraph();
+            poner_fecha.setAlignment(Paragraph.ALIGN_RIGHT);
+            poner_fecha.add("Fecha: " + verfecha + "\n\n");
 
-            // Sección de tareas y calificaciones
-            Paragraph parrafo2 = new Paragraph();
-            parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
-            parrafo2.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
-            parrafo2.add("\n\nTareas Registradas\n\n");
-            documento.add(parrafo2);
+            // Abrir documento y añadir contenido
+            documento.open();
+            documento.add(parrafo);
+            documento.add(poner_fecha);
 
-            PdfPTable tablaTareas = new PdfPTable(2); // Dos columnas: Tarea y Calificación
-            tablaTareas.addCell("Tarea");
-            tablaTareas.addCell("Calificación");
+            // Crear tabla para mostrar la información del estudiante
+            PdfPTable tablaAlumno = new PdfPTable(7); // 7 columnas
+            tablaAlumno.addCell("Nombres");
+            tablaAlumno.addCell("Apellidos");
+            tablaAlumno.addCell("Carnet");
+            tablaAlumno.addCell("Fecha de Nacimiento");
+            tablaAlumno.addCell("Email");
+            tablaAlumno.addCell("Teléfono");
+            tablaAlumno.addCell("Semestre");
 
             try {
-                // Consulta para obtener las tareas y calificaciones
-                String sqlTareas = "SELECT Tarea, Calificacion FROM Notas WHERE ID_Estudiante = ?";
-                PreparedStatement psTareas = cn.prepareStatement(sqlTareas);
-                psTareas.setString(1, txtCarnet.getText()); // Usar el Carnet del estudiante
-                ResultSet rsTareas = psTareas.executeQuery();
+                // Consulta para obtener la información del estudiante
+                String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+                        + "e.Correo, e.Telefono, cur.Semestre "
+                        + "FROM Estudiantes e "
+                        + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
+                        + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
+                        + "WHERE e.Carnet = ?";
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, txtCarnet.getText());
+                ResultSet rs = ps.executeQuery();
 
                 // Llenar la tabla con los resultados
-                while (rsTareas.next()) {
-                    tablaTareas.addCell(rsTareas.getString("Tarea"));
-                    tablaTareas.addCell(rsTareas.getString("Calificacion"));
+                if (rs.next()) {
+                    tablaAlumno.addCell(rs.getString("Nombre"));
+                    tablaAlumno.addCell(rs.getString("Apellido"));
+                    tablaAlumno.addCell(rs.getString("Carnet"));
+                    tablaAlumno.addCell(rs.getDate("Fecha_Nacimiento").toString());
+                    tablaAlumno.addCell(rs.getString("Correo"));
+                    tablaAlumno.addCell(rs.getString("Telefono"));
+                    tablaAlumno.addCell(rs.getString("Semestre"));
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró información para el estudiante con el carnet proporcionado.");
+                    return;
                 }
 
-                documento.add(tablaTareas); // Añadir tabla de tareas al documento
+                documento.add(tablaAlumno); // Añadir tabla al documento
+
+                // Sección de notas
+                Paragraph parrafo2 = new Paragraph();
+                parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
+                parrafo2.setFont(FontFactory.getFont("Arial", 20, BaseColor.BLACK));
+                parrafo2.add("\n\nNotas Registradas\n\n");
+                documento.add(parrafo2);
+
+                PdfPTable tablaNotas = new PdfPTable(3); // Tres columnas: Materia, Nota, Anotaciones
+                tablaNotas.addCell("Materia");
+                tablaNotas.addCell("Calificación");
+                tablaNotas.addCell("Anotaciones");
+
+                try {
+                    // Consulta para obtener las notas
+                    String sqlNotas = "SELECT m.Nombre_Materia, n.Calificacion, n.Anotaciones "
+                            + "FROM Notas n "
+                            + "INNER JOIN Materias m ON n.ID_Materia = m.ID_Materia "
+                            + "WHERE n.ID_Estudiante = ?";
+                    PreparedStatement psNotas = cn.prepareStatement(sqlNotas);
+                    psNotas.setString(1, txtCarnet.getText());
+                    ResultSet rsNotas = psNotas.executeQuery();
+
+                    // Llenar la tabla con los resultados
+                    while (rsNotas.next()) {
+                        tablaNotas.addCell(rsNotas.getString("Nombre_Materia"));
+                        tablaNotas.addCell(rsNotas.getString("Calificacion"));
+                        tablaNotas.addCell(rsNotas.getString("Anotaciones"));
+                    }
+
+                    documento.add(tablaNotas); // Añadir tabla de notas al documento
+
+                } catch (SQLException e) {
+                    System.err.println("Error al obtener las notas del estudiante: " + e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Error al obtener las notas. Contacte al administrador.");
+                }
 
             } catch (SQLException e) {
-                System.err.println("Error al obtener las tareas del estudiante: " + e.getMessage());
-                JOptionPane.showMessageDialog(this, "Error al obtener las tareas. Contacte al administrador.");
+                System.err.println("Error al obtener información del estudiante: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error al obtener información del estudiante. Contacte al administrador.");
             }
 
-        } catch (SQLException e) {
-            System.err.println("Error al obtener información del estudiante: " + e.getMessage());
-            JOptionPane.showMessageDialog(this, "Error al obtener información del estudiante. Contacte al administrador.");
+            documento.close();
+            JOptionPane.showMessageDialog(this, "Documento generado con éxito en el escritorio.");
+
+        } catch (Exception e) {
+            System.err.println("Error al generar el documento PDF: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al generar el documento. Contacte al administrador.");
         }
-
-        documento.close();
-        JOptionPane.showMessageDialog(this, "Documento generado con éxito en el escritorio.");
-
-    } catch (Exception e) {
-        System.err.println("Error al generar el documento PDF: " + e.getMessage());
-        JOptionPane.showMessageDialog(this, "Error al generar el documento. Contacte al administrador.");
-    }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     /**

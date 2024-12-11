@@ -13,6 +13,8 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
@@ -48,7 +50,10 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        
+        String busqueda = txtBuscar.getText();
+        buscarPorCarnetONombre(busqueda);
+        limpiarCampos();
+
         cerrar();
         //Al ser listado, no deben poder modificarse
         txtNombres.setEnabled(false);
@@ -60,26 +65,34 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtEstado.setEnabled(false);
         txtCurso.setEnabled(false);
         txtCUM.setEnabled(false);
-        }
+
+        // Evento que detecta la tecla al presionar en txtBuscar (por ejemplo, al presionar Enter o tecla modificada)
+        txtBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String busqueda = txtBuscar.getText();
+                if (!busqueda.isEmpty()) {
+                    buscarPorCarnetONombre(busqueda); // Ejecutar búsqueda por Carnet o Nombre
+                }
+            }
+        });
+    }
     
     private boolean verificarCarnetEnDB(String carnet) {
-    boolean existe = false;
+   boolean existe = false;
 
     // Agregar mensaje para verificar el valor recibido
-    System.out.println("Carnet recibido: " + carnet);
+    System.out.println("Carnet recibido para verificación: " + carnet);
 
     String query = "SELECT COUNT(*) AS Total FROM Estudiantes WHERE Carnet = ?";
-
-    try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=tuDB", "usuario", "contraseña");
-         PreparedStatement ps = con.prepareStatement(query)) {
-
-        ps.setString(1, carnet.trim()); // Asegúrate de eliminar espacios en blanco
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            int total = rs.getInt("Total");
-            System.out.println("Resultados encontrados: " + total);
-            existe = total > 0;
+    try (PreparedStatement ps = cn.prepareStatement(query)) { // Cerrar automáticamente el PreparedStatement
+        ps.setString(1, carnet.trim()); // Eliminar espacios innecesarios del Carnet
+        try (ResultSet rs = ps.executeQuery()) { // Cerrar automáticamente el ResultSet
+            if (rs.next()) {
+                int total = rs.getInt("Total");
+                System.out.println("Resultados encontrados: " + total);
+                existe = total > 0; // Verificar si hay al menos un registro
+            }
         }
     } catch (SQLException ex) {
         ex.printStackTrace();
@@ -109,19 +122,20 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             System.exit(0);
         }
     }// Método para buscar estudiantes por Carnet
-    private void buscarPorCarnet(String carnet) {
-        try {
-        // Consulta SQL para buscar por Carnet
+    private void buscarPorCarnetONombre(String busqueda) {
+    try {
+        // Consulta SQL para buscar por Carnet o Nombre
         String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
                    + "e.Correo, e.Telefono, e.Estado, cur.Semestre "
                    + "FROM Estudiantes e "
                    + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
                    + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
-                   + "WHERE e.Carnet LIKE ?";
+                   + "WHERE e.Carnet LIKE ? OR e.Nombre LIKE ?";
 
         // Preparar la consulta
         PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setString(1, "%" + carnet + "%"); // Usar % para buscar coincidencias parciales
+        ps.setString(1, "%" + busqueda + "%"); // Coincidencia parcial por Carnet
+        ps.setString(2, "%" + busqueda + "%"); // Coincidencia parcial por Nombre
         ResultSet rs = ps.executeQuery();
 
         // Si se encuentra un resultado, llenar los campos
@@ -134,21 +148,15 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             txtTelefono.setText(rs.getString("Telefono"));
             txtEstado.setText(rs.getString("Estado"));
             txtCurso.setText(rs.getString("Semestre"));
-            txtCUM.setText(""); // Puedes dejarlo vacío si no es necesario
-            
-            carnet = rs.getString("carnet");
-            
-        } 
-        else {
+        } else {
             // Limpiar los campos si no hay coincidencias
             limpiarCampos();
         }
     } catch (SQLException e) {
-        System.err.println("Error al buscar por Carnet: " + e.getMessage());
+        System.err.println("Error al buscar por Carnet o Nombre: " + e.getMessage());
         JOptionPane.showMessageDialog(this, "Error al buscar el estudiante. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-        
-        
+
 }
     private void limpiarCampos() {
     txtNombres.setText("");
@@ -397,25 +405,15 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
     private void btnRegCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCalificacionActionPerformed
         // TODO add your handling code here:
-      
-        
-                
-    if (!carnet.isEmpty()) {
-        // Verificar que el carnet existe en la base de datos
+        carnet = txtCarnet.getText(); // Captura el valor del campo txtCarnet
         if (verificarCarnetEnDB(carnet)) {
-            // Crear una nueva instancia de RegistrarCalificacion
-            RegistrarCalificacion ventana = new RegistrarCalificacion();
-            ventana.cargarDatosCarnet(carnet); // Pasar el carnet al formulario
-            ventana.setVisible(true);
-            this.dispose(); // Cerrar la ventana actual si es necesario
+            RegistrarCalificacion registrarCalificacion = new RegistrarCalificacion();
+            registrarCalificacion.cargarDatosCarnet(carnet); // Pasa el carnet al nuevo frame
+            registrarCalificacion.setVisible(true);
+            this.dispose(); // Opcional: Cierra el frame actual
         } else {
-            JOptionPane.showMessageDialog(this, "El carnet no existe en la base de datos.");
-            
+            JOptionPane.showMessageDialog(null, "El carnet ingresado no existe en la base de datos.");
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese un carnet válido.");
-        System.out.println("traigo el carnet" + carnet);
-    }
     }//GEN-LAST:event_btnRegCalificacionActionPerformed
 
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
@@ -423,8 +421,6 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         // Obtener el texto que el usuario está escribiendo
         String valorBusqueda = txtBuscar.getText().trim() + evt.getKeyChar();
 
-        // Filtrar por Carnet
-        buscarPorCarnet(valorBusqueda);
     }//GEN-LAST:event_txtBuscarKeyTyped
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed

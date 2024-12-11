@@ -42,21 +42,22 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
         setTitle("Registrar Calificaciones - Admin");
         cerrar();
         cargarcbMaterias();
-        
+        cargarDatosCarnet("");
+
         TextPrompt tarea = new TextPrompt("Ingresar tarea", txtTarea);
         TextPrompt calificacion = new TextPrompt("Ingresar calificacion", txtCalificacion);
         TextPrompt notas = new TextPrompt("Ingresar notas de la materia", txtNotas);
-        
+
         txtCarnet.setEditable(false);
-        
-        idAlumno = ListarEstudiantes.idAlumno;    
-        
-        
+
+        idAlumno = ListarEstudiantes.idAlumno;
+
     }
+
     public void cargarDatosCarnet(String carnet) {
-    txtCarnet.setText(carnet); // Muestra el carnet recibido en el campo de texto
-    txtCarnet.setEditable(false); // Bloquea la edición del campo
-}
+        txtCarnet.setText(carnet); // Muestra el carnet recibido en el campo de texto
+        txtCarnet.setEditable(false); // Bloquea la edición del campo
+    }
     
     public void cerrar(){
         try {

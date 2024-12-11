@@ -22,7 +22,7 @@ public class Conectar {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             //user: admin
             //PW: admin123
-            String url = "jdbc:sqlserver://ROLO-Laptop:1433;databaseName=InscribaTec;encrypt=false;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://Roland:1433;databaseName=InscribaTec;encrypt=false;trustServerCertificate=true";
             String user = "administrador"; // 
             String password = "Admin123"; // 
             

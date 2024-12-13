@@ -6,6 +6,7 @@ package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
+import Frames.GestionNotas;
 import Frames.RegistrarCalificacion;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Document;
@@ -244,7 +245,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
         txtCUM = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCorregirNotas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -326,9 +327,14 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
         jLabel10.setText("CUM");
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Edit.png"))); // NOI18N
-        jButton1.setText("Corregir Notas");
+        btnCorregirNotas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnCorregirNotas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Edit.png"))); // NOI18N
+        btnCorregirNotas.setText("Corregir Notas");
+        btnCorregirNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCorregirNotasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -380,7 +386,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
                                 .addComponent(btnRegCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnImprimir))
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(btnCorregirNotas, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
             .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -428,7 +434,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnCorregirNotas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -588,6 +594,19 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
+    private void btnCorregirNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCorregirNotasActionPerformed
+        // TODO add your handling code here:
+        carnet = txtCarnet.getText(); // Captura el valor del campo txtCarnet
+        if (verificarCarnetEnDB(carnet)) {
+            GestionNotas gestionNotas = new GestionNotas();
+            gestionNotas.cargarDatosCarnet(carnet); // Pasa el carnet al nuevo frame
+            gestionNotas.setVisible(true);
+            this.dispose(); // Opcional: Cierra el frame actual
+        } else {
+            JOptionPane.showMessageDialog(null, "El carnet ingresado no existe en la base de datos.");
+        }
+    }//GEN-LAST:event_btnCorregirNotasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -626,9 +645,9 @@ public class ListarEstudiantes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackAndFooter5;
     private javax.swing.JButton btnBack5;
+    private javax.swing.JButton btnCorregirNotas;
     private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnRegCalificacion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

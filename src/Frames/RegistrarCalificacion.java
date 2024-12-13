@@ -307,12 +307,12 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
     }
 
 // Método para limpiar los campos
-private void limpiarCampos() {
-    txtCarnet.setText("");
-    cbTareas.setSelectedIndex(0);  // Reiniciar selección de tarea
-    cbMaterias.setSelectedIndex(0);  // Reiniciar selección de materia
-    txtCalificacion.setText("");
-    txtNotas.setText("");  // Limpiar el campo de comentarios
+    private void limpiarCampos() {
+        txtCarnet.setText("");
+        cbTareas.setSelectedIndex(0);  // Reiniciar selección de tarea
+        cbMaterias.setSelectedIndex(0);  // Reiniciar selección de materia
+        txtCalificacion.setText("");
+        txtNotas.setText("");  // Limpiar el campo de comentarios
     }//GEN-LAST:event_btnGuardarNotasActionPerformed
 
     /**

@@ -32,9 +32,7 @@ public class GestionNotas extends javax.swing.JFrame {
         // Opcional: Establecer un título para la ventana
         setTitle("Mantenimiento Notas - Admin");
         cargarcbMaterias();
-        cargarNombreCompletoPorCarnet();
-        txtCarnet.setEditable(false);
-        
+        txtCarnet.setEditable(false);      
         
         
     }
@@ -107,36 +105,7 @@ public class GestionNotas extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error al cargar las calificaciones. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-    public void cargarNombreCompletoPorCarnet() {
-    try {
-        // Verificar que el campo txtCarnet no esté vacío
-        String carnet = txtCarnet.getText().trim();
-        if (carnet.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un carnet válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Consulta SQL para obtener el nombre completo basado en el carnet
-        String sql = "SELECT Nombre, Apellido FROM Estudiantes WHERE Carnet = ?";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setString(1, carnet); // Asignar el valor del carnet
-        ResultSet rs = ps.executeQuery();
-
-        // Verificar si se encontró un estudiante
-        if (rs.next()) {
-            // Obtener los datos y asignarlos al campo txtNombre
-            String nombreCompleto = rs.getString("Nombre") + " " + rs.getString("Apellido");
-            txtNombre.setText(nombreCompleto);
-        } else {
-            // Limpiar el campo txtNombre si no se encuentra el estudiante
-            txtNombre.setText("");
-            JOptionPane.showMessageDialog(this, "No se encontró un estudiante con el carnet proporcionado.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    } catch (SQLException e) {
-        System.err.println("Error al buscar el estudiante: " + e.getMessage());
-        JOptionPane.showMessageDialog(this, "Error al buscar el estudiante. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
+    
     public void cargarDatosCarnet(String carnet) {
         txtCarnet.setText(carnet); // Muestra el carnet recibido en el campo de texto
         txtCarnet.setEditable(false); // Bloquea la edición del campo
@@ -154,12 +123,10 @@ public class GestionNotas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCalificaciones = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtCarnet = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
         txtCalificacion = new javax.swing.JTextField();
         cmbMaterias = new javax.swing.JComboBox<>();
         cbTareas = new javax.swing.JComboBox<>();
@@ -183,9 +150,6 @@ public class GestionNotas extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblCalificaciones);
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel2.setText("Nombre");
-
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setText("Actividad");
 
@@ -196,8 +160,6 @@ public class GestionNotas extends javax.swing.JFrame {
         jLabel5.setText("Materia");
 
         txtCarnet.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-
-        txtNombre.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         txtCalificacion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
@@ -261,21 +223,16 @@ public class GestionNotas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 25, Short.MAX_VALUE)))
-                        .addGap(15, 15, 15)
+                            .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnActualizarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(BackAndFooter6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -288,14 +245,10 @@ public class GestionNotas extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addGap(79, 79, 79)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -371,7 +324,6 @@ public class GestionNotas extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbTareas;
     private javax.swing.JComboBox<String> cmbMaterias;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -380,7 +332,6 @@ public class GestionNotas extends javax.swing.JFrame {
     private javax.swing.JTable tblCalificaciones;
     private javax.swing.JTextField txtCalificacion;
     private javax.swing.JTextField txtCarnet;
-    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
     Conectar conectado = new Conectar();
     Connection cn = conectado.conexion();

@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.swing.JTable;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
@@ -53,6 +54,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         String busqueda = txtBuscar.getText();
         buscarPorCarnetONombre(busqueda);
         limpiarCampos();
+        llenarTablaCalificaciones(txtCarnet.getText());
 
         cerrar();
         //Al ser listado, no deben poder modificarse
@@ -77,6 +79,40 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void llenarTablaCalificaciones(String carnet) {
+    try {
+        // Consulta para obtener datos de las calificaciones
+        String sql = "SELECT ID_Nota, Nombre_Materia, Actividad, Calificacion FROM Notas WHERE Carnet = ?";
+        PreparedStatement pst = cn.prepareStatement(sql);
+        pst.setString(1, carnet.trim()); // Usar el carnet recibido como parámetro
+        ResultSet rs = pst.executeQuery();
+
+        // Crear modelo de tabla con columnas definidas
+        String[] columnas = {"ID Nota", "Materia", "Actividad", "Calificación"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // Modelo vacío
+
+        // Llenar el modelo con los datos obtenidos de la consulta
+        while (rs.next()) {
+            Object[] fila = {
+                rs.getInt("ID_Nota"),           // ID de la Nota
+                rs.getString("Nombre_Materia"), // Nombre de la materia
+                rs.getString("Actividad"),      // Actividad
+                rs.getDouble("Calificacion")    // Calificación
+            };
+            modelo.addRow(fila);
+        }
+
+        // Asignar el modelo a la tabla existente
+        tblCalificaciones.setModel(modelo);
+        tblCalificaciones.setBounds(10, 10, 600, 400); // Ajustar posición y tamaño si es necesario
+        tblCalificaciones.repaint(); // Refrescar la tabla visualmente
+
+    } catch (SQLException e) {
+        System.err.println("Error al obtener calificaciones: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al cargar las calificaciones. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
     
     private boolean verificarCarnetEnDB(String carnet) {
    boolean existe = false;
@@ -123,41 +159,43 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         }
     }// Método para buscar estudiantes por Carnet
     private void buscarPorCarnetONombre(String busqueda) {
-    try {
-        // Consulta SQL para buscar por Carnet o Nombre
-        String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
-                   + "e.Correo, e.Telefono, e.Estado, cur.Semestre "
-                   + "FROM Estudiantes e "
-                   + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
-                   + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
-                   + "WHERE e.Carnet LIKE ? OR e.Nombre LIKE ?";
+        try {
+            // Consulta SQL para buscar por Carnet o Nombre
+            String sql = "SELECT e.Nombre, e.Apellido, e.Carnet, e.Fecha_Nacimiento, "
+                    + "e.Correo, e.Telefono, e.Estado, cur.Semestre "
+                    + "FROM Estudiantes e "
+                    + "INNER JOIN Inscripciones i ON e.ID_Estudiante = i.ID_Estudiante "
+                    + "INNER JOIN Cursos cur ON i.ID_Curso = cur.ID_Curso "
+                    + "WHERE e.Carnet LIKE ? OR e.Nombre LIKE ?";
 
-        // Preparar la consulta
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setString(1, "%" + busqueda + "%"); // Coincidencia parcial por Carnet
-        ps.setString(2, "%" + busqueda + "%"); // Coincidencia parcial por Nombre
-        ResultSet rs = ps.executeQuery();
+            // Preparar la consulta
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setString(1, "%" + busqueda + "%"); // Coincidencia parcial por Carnet
+            ps.setString(2, "%" + busqueda + "%"); // Coincidencia parcial por Nombre
+            ResultSet rs = ps.executeQuery();
 
-        // Si se encuentra un resultado, llenar los campos
-        if (rs.next()) {
-            txtNombres.setText(rs.getString("Nombre"));
-            txtApellidos.setText(rs.getString("Apellido"));
-            txtCarnet.setText(rs.getString("Carnet"));
-            txtFechaNac.setText(rs.getDate("Fecha_Nacimiento").toString()); // Formato yyyy-MM-dd
-            txtEmail.setText(rs.getString("Correo"));
-            txtTelefono.setText(rs.getString("Telefono"));
-            txtEstado.setText(rs.getString("Estado"));
-            txtCurso.setText(rs.getString("Semestre"));
-        } else {
-            // Limpiar los campos si no hay coincidencias
-            limpiarCampos();
+            // Si se encuentra un resultado, llenar los campos
+            if (rs.next()) {
+                txtNombres.setText(rs.getString("Nombre"));
+                txtApellidos.setText(rs.getString("Apellido"));
+                txtCarnet.setText(rs.getString("Carnet"));
+                txtFechaNac.setText(rs.getDate("Fecha_Nacimiento").toString()); // Formato yyyy-MM-dd
+                txtEmail.setText(rs.getString("Correo"));
+                txtTelefono.setText(rs.getString("Telefono"));
+                txtEstado.setText(rs.getString("Estado"));
+                txtCurso.setText(rs.getString("Semestre"));
+                // Llenar tabla con el nuevo carnet encontrado
+                llenarTablaCalificaciones(rs.getString("Carnet"));
+            } else {
+                // Limpiar los campos si no hay coincidencias
+                limpiarCampos();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar por Carnet o Nombre: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al buscar el estudiante. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (SQLException e) {
-        System.err.println("Error al buscar por Carnet o Nombre: " + e.getMessage());
-        JOptionPane.showMessageDialog(this, "Error al buscar el estudiante. Contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-}
+    
     private void limpiarCampos() {
     txtNombres.setText("");
     txtApellidos.setText("");
@@ -200,7 +238,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         txtEstado = new javax.swing.JTextField();
         txtCurso = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblEstudiante = new javax.swing.JTable();
+        tblCalificaciones = new javax.swing.JTable();
         txtBuscar = new javax.swing.JTextField();
         btnRegCalificacion = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
@@ -258,7 +296,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
 
         jLabel8.setText("Estado");
 
-        jScrollPane1.setViewportView(tblEstudiante);
+        jScrollPane1.setViewportView(tblCalificaciones);
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -324,25 +362,25 @@ public class ListarEstudiantes extends javax.swing.JFrame {
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 82, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCUM, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(60, 60, 60)
                         .addComponent(btnRegCalificacion)
                         .addGap(18, 18, 18)
-                        .addComponent(btnImprimir)))
+                        .addComponent(btnImprimir))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
             .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -380,7 +418,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
                             .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 6, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -531,7 +569,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
             }
 
             documento.close();
-            JOptionPane.showMessageDialog(this, "Documento generado con éxito en el escritorio.");
+            JOptionPane.showMessageDialog(this, "Documento generado con éxito!");
 
         } catch (Exception e) {
             System.err.println("Error al generar el documento PDF: " + e.getMessage());
@@ -591,7 +629,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblfooter3;
-    private javax.swing.JTable tblEstudiante;
+    private javax.swing.JTable tblCalificaciones;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCUM;

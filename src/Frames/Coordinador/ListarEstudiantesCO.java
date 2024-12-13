@@ -359,7 +359,7 @@ public class ListarEstudiantesCO extends javax.swing.JFrame {
 
     private void btnRegCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCalificacionActionPerformed
         // TODO add your handling code here:
-        RegistrarCalificacion rc = new RegistrarCalificacion();
+        RegistrarCalificacionCO rc = new RegistrarCalificacionCO();
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegCalificacionActionPerformed

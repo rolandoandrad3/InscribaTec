@@ -49,7 +49,7 @@ public class VistaEstudiante extends javax.swing.JFrame {
 
         btnNotas.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
         btnNotas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/registro_notas.png"))); // NOI18N
-        btnNotas.setText("Registro de Notas");
+        btnNotas.setText("Mis Notas");
         btnNotas.setToolTipText("Registro de notas por Estudiante");
         btnNotas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnNotas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

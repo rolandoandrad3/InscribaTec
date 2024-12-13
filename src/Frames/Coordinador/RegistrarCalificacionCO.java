@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Frames;
+package Frames.Coordinador;
 
 import Clases.Conectar;
 import Frames.Admin.ListarEstudiantes;
 import Frames.Admin.Principal;
+import Frames.Coordinador.VistaCoordinador;
+import Frames.TextPrompt;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  *
  * @author Rolan
  */
-public class RegistrarCalificacion extends javax.swing.JFrame {
+public class RegistrarCalificacionCO extends javax.swing.JFrame {
 
     int idAlumno = 0;
     String carnetAlummno = "";
@@ -32,7 +34,7 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
     /**
      * Creates new form RegistrarCalificacion
      */
-    public RegistrarCalificacion() {
+    public RegistrarCalificacionCO() {
         initComponents();
         setSize(700, 600);
         // Centrar la ventana en la pantalla
@@ -270,8 +272,8 @@ public class RegistrarCalificacion extends javax.swing.JFrame {
 
     private void btnBack6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack6ActionPerformed
         // TODO add your handling code here:
-        Principal principal = new Principal();
-        principal.setVisible(true);
+        VistaCoordinador vc = new VistaCoordinador();
+        vc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack6ActionPerformed
 
@@ -332,20 +334,21 @@ private void limpiarCampos() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCalificacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarCalificacionCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCalificacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarCalificacionCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCalificacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarCalificacionCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCalificacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarCalificacionCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegistrarCalificacion().setVisible(true);
+                new RegistrarCalificacionCO().setVisible(true);
             }
         });
     }

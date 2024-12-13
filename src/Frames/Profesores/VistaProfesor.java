@@ -168,8 +168,9 @@ public class VistaProfesor extends javax.swing.JFrame {
 
     private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed
         // TODO add your handling code here:
-        
-
+        RegistrarCalificacionProf rc = new     RegistrarCalificacionProf();
+        rc.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnNotasActionPerformed
 
     private void lblLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLogOutMouseClicked

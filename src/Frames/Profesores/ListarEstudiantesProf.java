@@ -363,7 +363,7 @@ public class ListarEstudiantesProf extends javax.swing.JFrame {
 
     private void btnRegCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegCalificacionActionPerformed
         // TODO add your handling code here:
-        RegistrarCalificacion rc = new RegistrarCalificacion();
+        RegistrarCalificacionProf rc = new RegistrarCalificacionProf();
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegCalificacionActionPerformed

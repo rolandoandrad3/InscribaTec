@@ -7,7 +7,6 @@ package Frames.Admin;
 import Clases.Conectar;
 import Frames.Admin.Principal;
 import Frames.GestionNotas;
-import Frames.RegistrarCalificacion;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.FontFactory;

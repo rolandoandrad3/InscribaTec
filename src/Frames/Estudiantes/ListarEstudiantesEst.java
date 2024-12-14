@@ -6,7 +6,7 @@ package Frames.Estudiantes;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
-import Frames.RegistrarCalificacion;
+import Frames.Admin.RegistrarCalificacion;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.FontFactory;

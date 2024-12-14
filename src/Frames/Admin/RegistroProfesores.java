@@ -6,6 +6,7 @@ package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
+import Frames.TextPrompt;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -34,6 +35,12 @@ public class RegistroProfesores extends javax.swing.JFrame {
         txtIDProfesor.setEnabled(false);
         mostrarTabla("");
         limpiarCampos();
+        
+        TextPrompt idprofe = new TextPrompt("ID Profesor",txtIDProfesor);
+        TextPrompt nombre = new TextPrompt("Nombres",txtNombre);
+        TextPrompt apellido = new TextPrompt("Nombres",txtApellido);
+        TextPrompt email = new TextPrompt("Nombres",txtEmail);
+        TextPrompt telefono = new TextPrompt("Nombres",txtTelefono);
         
         
         

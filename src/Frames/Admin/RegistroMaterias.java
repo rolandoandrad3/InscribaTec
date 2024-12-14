@@ -6,6 +6,7 @@ package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
+import Frames.TextPrompt;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
@@ -37,6 +38,10 @@ public class RegistroMaterias extends javax.swing.JFrame {
         cargarCBCarrera(cbCarrera);
         cbCarrera.setSelectedItem(6);
         txtIdMateria.setEnabled(false);
+        
+        TextPrompt idprofe = new TextPrompt("Autogenerado",txtIdMateria);
+        TextPrompt nombre = new TextPrompt("Nombre Materia",txtNombreMateria);
+        TextPrompt cod = new TextPrompt("Codigo de Materia",txtCodMateria);
         
     }
         public void cerrar(){

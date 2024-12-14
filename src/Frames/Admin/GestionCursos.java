@@ -288,7 +288,7 @@ public class GestionCursos extends javax.swing.JFrame {
         txtCupoMax.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         cbSemestre.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cbSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ciclo 01", "Ciclo 02", "Ciclo 03" }));
+        cbSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Ciclo", "Ciclo 01", "Ciclo 02", "Ciclo 03" }));
         cbSemestre.setToolTipText("");
         cbSemestre.setName(""); // NOI18N
 
@@ -317,8 +317,7 @@ public class GestionCursos extends javax.swing.JFrame {
         });
 
         cbYear.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cbYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030" }));
-        cbYear.setSelectedIndex(4);
+        cbYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona año", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030" }));
         cbYear.setToolTipText("");
         cbYear.setName(""); // NOI18N
 

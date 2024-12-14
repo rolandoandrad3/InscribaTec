@@ -7,7 +7,7 @@ package Frames.Estudiantes;
 import Frames.Admin.Principal;
 import Frames.Admin.ListarEstudiantes;
 import Frames.Login;
-import Frames.Reportes;
+import Frames.Admin.Reportes;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,8 +41,8 @@ public class VistaEstudiante extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnNotas = new javax.swing.JToggleButton();
-        btnReportes = new javax.swing.JToggleButton();
         lblLogOut = new javax.swing.JLabel();
+        btnProfesores = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1125, 500));
@@ -59,18 +59,6 @@ public class VistaEstudiante extends javax.swing.JFrame {
             }
         });
 
-        btnReportes.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reports.png"))); // NOI18N
-        btnReportes.setText("Reportes");
-        btnReportes.setToolTipText("Generacion de reportes por estudiante");
-        btnReportes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
-            }
-        });
-
         lblLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
         lblLogOut.setText("Log Out");
         lblLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -79,31 +67,43 @@ public class VistaEstudiante extends javax.swing.JFrame {
             }
         });
 
+        btnProfesores.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        btnProfesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/proffesor.png"))); // NOI18N
+        btnProfesores.setText("Profesores");
+        btnProfesores.setToolTipText("Gestion de profesores");
+        btnProfesores.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnProfesores.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProfesores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProfesoresActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(666, Short.MAX_VALUE)
                 .addComponent(lblLogOut)
                 .addGap(27, 27, 27))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(159, 159, 159)
+                .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btnProfesores, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(lblLogOut)
-                .addGap(116, 116, 116)
+                .addGap(134, 134, 134)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(195, Short.MAX_VALUE))
+                    .addComponent(btnProfesores, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,12 +133,6 @@ public class VistaEstudiante extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnNotasActionPerformed
 
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
-        
-        dispose();
-    }//GEN-LAST:event_btnReportesActionPerformed
-
     private void lblLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLogOutMouseClicked
         // TODO add your handling code here:
         // Confirm logout
@@ -154,6 +148,13 @@ public class VistaEstudiante extends javax.swing.JFrame {
             login.setVisible(true);
         }
     }//GEN-LAST:event_lblLogOutMouseClicked
+
+    private void btnProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfesoresActionPerformed
+        // TODO add your handling code here:
+        ListarProfesores lp = new ListarProfesores();
+        lp.setVisible(true);
+        dispose();        
+    }//GEN-LAST:event_btnProfesoresActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,7 +194,7 @@ public class VistaEstudiante extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnNotas;
-    private javax.swing.JToggleButton btnReportes;
+    private javax.swing.JToggleButton btnProfesores;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLogOut;
     // End of variables declaration//GEN-END:variables

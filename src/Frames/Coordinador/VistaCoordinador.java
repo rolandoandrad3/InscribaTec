@@ -7,7 +7,7 @@ package Frames.Coordinador;
 import Frames.Admin.GestionCursos;
 import Frames.Admin.GestionProfesores;
 import Frames.Login;
-import Frames.Reportes;
+import Frames.Admin.Reportes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -256,7 +256,8 @@ public class VistaCoordinador extends javax.swing.JFrame {
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-        
+        ReportesCO reportes = new ReportesCO();
+        reportes.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnReportesActionPerformed
 

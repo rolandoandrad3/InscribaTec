@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Frames;
+package Frames.Coordinador;
 
 import Frames.Admin.Principal;
 import java.awt.event.WindowAdapter;
@@ -14,12 +14,12 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  *
  * @author Rolan
  */
-public class ListarProfesores extends javax.swing.JFrame {
+public class ReportesCO extends javax.swing.JFrame {
 
     /**
-     * Creates new form ListarProfesores
+     * Creates new form Reportes
      */
-    public ListarProfesores() {
+    public ReportesCO() {
         initComponents();
         setSize(800, 520);
         // Centrar la ventana en la pantalla
@@ -27,7 +27,7 @@ public class ListarProfesores extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Listado de Profesores");
+        setTitle("Reportes");
         cerrar();
     }
         public void cerrar(){
@@ -59,69 +59,78 @@ public class ListarProfesores extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BackAndFooter5 = new javax.swing.JPanel();
-        btnBack5 = new javax.swing.JButton();
-        lblfooter3 = new javax.swing.JLabel();
+        BackAndFooter2 = new javax.swing.JPanel();
+        btnBack2 = new javax.swing.JButton();
+        lblfooter = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnBack5.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        btnBack5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/back.png"))); // NOI18N
-        btnBack5.setText("Vover");
-        btnBack5.addActionListener(new java.awt.event.ActionListener() {
+        btnBack2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        btnBack2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/back.png"))); // NOI18N
+        btnBack2.setText("Vover");
+        btnBack2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBack5ActionPerformed(evt);
+                btnBack2ActionPerformed(evt);
             }
         });
 
-        lblfooter3.setText("InscribaTec @ Universiad Tecnologica");
+        lblfooter.setText("InscribaTec @ Universiad Tecnologica");
 
-        javax.swing.GroupLayout BackAndFooter5Layout = new javax.swing.GroupLayout(BackAndFooter5);
-        BackAndFooter5.setLayout(BackAndFooter5Layout);
-        BackAndFooter5Layout.setHorizontalGroup(
-            BackAndFooter5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BackAndFooter5Layout.createSequentialGroup()
-                .addComponent(btnBack5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 445, Short.MAX_VALUE)
-                .addComponent(lblfooter3)
+        javax.swing.GroupLayout BackAndFooter2Layout = new javax.swing.GroupLayout(BackAndFooter2);
+        BackAndFooter2.setLayout(BackAndFooter2Layout);
+        BackAndFooter2Layout.setHorizontalGroup(
+            BackAndFooter2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackAndFooter2Layout.createSequentialGroup()
+                .addComponent(btnBack2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 451, Short.MAX_VALUE)
+                .addComponent(lblfooter)
                 .addContainerGap())
         );
-        BackAndFooter5Layout.setVerticalGroup(
-            BackAndFooter5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackAndFooter5Layout.createSequentialGroup()
+        BackAndFooter2Layout.setVerticalGroup(
+            BackAndFooter2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackAndFooter2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(BackAndFooter5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblfooter3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBack5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(BackAndFooter2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblfooter, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBack2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
+        jLabel1.setText("Comming Soon!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BackAndFooter5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(BackAndFooter2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(225, 225, 225))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(457, Short.MAX_VALUE)
-                .addComponent(BackAndFooter5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(105, 105, 105)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addComponent(BackAndFooter2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBack5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack5ActionPerformed
+    private void btnBack2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack2ActionPerformed
         // TODO add your handling code here:
-        Principal principal = new Principal();
-        principal.setVisible(true);
+        VistaCoordinador vc = new VistaCoordinador();
+        vc.setVisible(true);
         dispose();
-    }//GEN-LAST:event_btnBack5ActionPerformed
+    }//GEN-LAST:event_btnBack2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -140,27 +149,29 @@ public class ListarProfesores extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListarProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportesCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListarProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportesCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListarProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportesCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListarProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportesCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListarProfesores().setVisible(true);
+                new ReportesCO().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel BackAndFooter5;
-    private javax.swing.JButton btnBack5;
-    private javax.swing.JLabel lblfooter3;
+    private javax.swing.JPanel BackAndFooter2;
+    private javax.swing.JButton btnBack2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblfooter;
     // End of variables declaration//GEN-END:variables
 }

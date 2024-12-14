@@ -6,7 +6,7 @@ package Frames.Profesores;
 
 import Frames.Admin.ListarEstudiantes;
 import Frames.Login;
-import Frames.Reportes;
+import Frames.Admin.Reportes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;

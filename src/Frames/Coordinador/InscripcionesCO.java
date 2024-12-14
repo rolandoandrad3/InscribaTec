@@ -29,7 +29,7 @@ public class InscripcionesCO extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(true);
         // Opcional: Establecer un título para la ventana
-        setTitle("Listado de Estudiantes - Admin");
+        setTitle("Listado de Estudiantes - Coordinador");
         cerrar();
         cargarcbEstudiante();
         cargarcbCursos();

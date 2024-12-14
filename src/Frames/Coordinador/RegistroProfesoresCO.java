@@ -29,7 +29,7 @@ public class RegistroProfesoresCO extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Registro de Profesores - Admin");
+        setTitle("Registro de Profesores - Coordinador");
         cerrar();
         txtIDProfesor.setEnabled(false);
         mostrarTabla("");

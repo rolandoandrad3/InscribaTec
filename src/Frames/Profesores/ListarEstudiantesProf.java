@@ -44,7 +44,7 @@ public class ListarEstudiantesProf extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        
+        setTitle("Listar Estudiante - Profesor");
         cerrar();
         //Al ser listado, no deben poder modificarse
         txtNombres.setEnabled(false);

@@ -42,7 +42,7 @@ public class GestionCursosCO extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(true);
         // Opcional: Establecer un título para la ventana
-        setTitle("Gestion de Ciclos - Admin");
+        setTitle("Gestion de Ciclos - Coordinador");
         idCurso.setEnabled(false);
         mostrarTabla("");
         

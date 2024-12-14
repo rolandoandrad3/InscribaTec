@@ -29,7 +29,7 @@ public class VistaProfesor extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Gestion de Usuarios");
+        setTitle("Menu Profesores - Profesor");
         cerrar();
     }
 
@@ -64,7 +64,6 @@ public class VistaProfesor extends javax.swing.JFrame {
     private void initComponents() {
 
         btnEstudiantes = new javax.swing.JToggleButton();
-        btnReportes = new javax.swing.JToggleButton();
         btnNotas = new javax.swing.JToggleButton();
         lblLogOut = new javax.swing.JLabel();
 
@@ -79,18 +78,6 @@ public class VistaProfesor extends javax.swing.JFrame {
         btnEstudiantes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEstudiantesActionPerformed(evt);
-            }
-        });
-
-        btnReportes.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reports.png"))); // NOI18N
-        btnReportes.setText("Reportes");
-        btnReportes.setToolTipText("Generacion de reportes por estudiante");
-        btnReportes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
             }
         });
 
@@ -122,16 +109,10 @@ public class VistaProfesor extends javax.swing.JFrame {
                 .addContainerGap(132, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(98, 98, 98)
-                                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(154, 154, 154)
-                                .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(130, 130, 130))
+                        .addComponent(btnEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59)
+                        .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(169, 169, 169))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblLogOut)
                         .addGap(19, 19, 19))))
@@ -143,11 +124,9 @@ public class VistaProfesor extends javax.swing.JFrame {
                 .addComponent(lblLogOut)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(175, 175, 175))
+                    .addComponent(btnEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(258, 258, 258))
         );
 
         pack();
@@ -159,12 +138,6 @@ public class VistaProfesor extends javax.swing.JFrame {
         ls.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnEstudiantesActionPerformed
-
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
-        
-        dispose();
-    }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed
         // TODO add your handling code here:
@@ -227,7 +200,6 @@ public class VistaProfesor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnEstudiantes;
     private javax.swing.JToggleButton btnNotas;
-    private javax.swing.JToggleButton btnReportes;
     private javax.swing.JLabel lblLogOut;
     // End of variables declaration//GEN-END:variables
 }

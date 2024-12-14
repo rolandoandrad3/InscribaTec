@@ -6,7 +6,6 @@ package Frames.Admin;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
-import Frames.GestionNotas;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.FontFactory;
@@ -55,6 +54,7 @@ public class ListarEstudiantes extends javax.swing.JFrame {
         buscarPorCarnetONombre(busqueda);
         limpiarCampos();
         llenarTablaCalificaciones(txtCarnet.getText());
+        setTitle("Listar Estudiantes - Admin");
 
         cerrar();
         //Al ser listado, no deben poder modificarse

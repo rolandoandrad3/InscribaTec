@@ -27,7 +27,7 @@ public class VistaEstudiante extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Gestion de Estudiantes");
+        setTitle("Menu Estudiantes - Estudiante");
     }
 
     /**

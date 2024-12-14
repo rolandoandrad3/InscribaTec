@@ -5,7 +5,7 @@
 package Frames.Coordinador;
 
 import Frames.Admin.GestionCursos;
-import Frames.GestionProfesores;
+import Frames.Admin.GestionProfesores;
 import Frames.Login;
 import Frames.Reportes;
 import java.awt.event.WindowAdapter;

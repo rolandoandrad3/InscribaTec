@@ -32,7 +32,7 @@ public class RegistroMateriasCO extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(true);
         // Opcional: Establecer un título para la ventana
-        setTitle("Registro de Materias - Admin");
+        setTitle("Registro de Materias - Coordinador");
         cerrar();
         mostrartabla("");
         cargarCBCarrera(cbCarrera);

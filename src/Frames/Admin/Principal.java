@@ -4,7 +4,6 @@
  */
 package Frames.Admin;
 
-import Frames.GestionProfesores;
 import Frames.GestionAlumnos;
 import Frames.Login;
 import Frames.Reportes;

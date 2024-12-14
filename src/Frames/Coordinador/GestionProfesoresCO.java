@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Frames;
+package Frames.Coordinador;
 
 import Clases.Conectar;
 import Frames.Admin.Principal;
 import Frames.Coordinador.VistaCoordinador;
+import Frames.TextPrompt;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -20,12 +21,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Rolan
  */
-public class GestionProfesores extends javax.swing.JFrame {
+public class GestionProfesoresCO extends javax.swing.JFrame {
 
     /**
      * Creates new form GestionProfesores
      */
-    public GestionProfesores() {
+    public GestionProfesoresCO() {
         initComponents();
         setSize(800, 520);
         // Centrar la ventana en la pantalla
@@ -33,7 +34,7 @@ public class GestionProfesores extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(false);
         // Opcional: Establecer un título para la ventana
-        setTitle("Gestion de Profesores - Admin");
+        setTitle("Gestion de Profesores - Coordinador");
         cerrar();
         limpiar();
         mostrarTabla(txtBuscar.getText().trim());
@@ -340,8 +341,8 @@ public class GestionProfesores extends javax.swing.JFrame {
 
     private void btnBack5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack5ActionPerformed
         // TODO add your handling code here:
-        Principal princi = new Principal();
-        princi.setVisible(true);
+        VistaCoordinador vc = new VistaCoordinador();
+        vc.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnBack5ActionPerformed
 
@@ -545,14 +546,22 @@ public class GestionProfesores extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GestionProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionProfesoresCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GestionProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionProfesoresCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GestionProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionProfesoresCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GestionProfesores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionProfesoresCO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -565,7 +574,7 @@ public class GestionProfesores extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionProfesores().setVisible(true);
+                new GestionProfesoresCO().setVisible(true);
             }
         });
     }

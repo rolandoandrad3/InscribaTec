@@ -42,7 +42,7 @@ public class RegistrarCalificacionProf extends javax.swing.JFrame {
         // Evitar que la ventana sea redimensionable
         setResizable(true);
         // Opcional: Establecer un título para la ventana
-        setTitle("Registrar Calificaciones - Admin");
+        setTitle("Registrar Calificaciones - Profesor");
         cerrar();
         cargarcbMaterias();
         cargarDatosCarnet("");
